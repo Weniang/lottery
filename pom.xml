@@ -26,5 +26,6 @@
 		<module>lottery-web</module>
 		<module>lottery-mobile</module>
 		<module>lottery-admin</module>
+		<module>lottery-web-front</module>
 	</modules>
 </project>
