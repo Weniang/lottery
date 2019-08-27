@@ -16,7 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgentUtil;
 import me.zohar.lottery.constants.Constant;
-import me.zohar.lottery.useraccount.service.LoginLogService;
+import me.zohar.lottery.useraccount.service.LoginService;
 import me.zohar.lottery.useraccount.service.UserAccountService;
 import me.zohar.lottery.useraccount.vo.LoginAccountInfoVO;
 
@@ -27,7 +27,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	private UserAccountService userAccountService;
 
 	@Autowired
-	private LoginLogService loginLogService;
+	private LoginService loginLogService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {

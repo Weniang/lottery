@@ -16,7 +16,7 @@ import me.zohar.lottery.useraccount.param.BindBankInfoParam;
 import me.zohar.lottery.useraccount.param.LoginLogQueryCondParam;
 import me.zohar.lottery.useraccount.param.UserAccountEditParam;
 import me.zohar.lottery.useraccount.param.UserAccountQueryCondParam;
-import me.zohar.lottery.useraccount.service.LoginLogService;
+import me.zohar.lottery.useraccount.service.LoginService;
 import me.zohar.lottery.useraccount.service.UserAccountService;
 import me.zohar.lottery.useraccount.vo.UserAccountInfoVO;
 
@@ -28,7 +28,7 @@ public class UserAccountController {
 	private UserAccountService userAccountService;
 
 	@Autowired
-	private LoginLogService loginLogService;
+	private LoginService loginLogService;
 
 	@GetMapping("/findLoginLogByPage")
 	@ResponseBody

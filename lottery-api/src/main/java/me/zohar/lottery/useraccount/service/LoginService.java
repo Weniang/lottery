@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,19 +30,36 @@ import lombok.extern.slf4j.Slf4j;
 import me.zohar.lottery.common.utils.IdUtils;
 import me.zohar.lottery.common.utils.ThreadPoolUtils;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.constants.Constant;
 import me.zohar.lottery.useraccount.domain.LoginLog;
 import me.zohar.lottery.useraccount.param.LoginLogQueryCondParam;
 import me.zohar.lottery.useraccount.repo.LoginLogRepo;
+import me.zohar.lottery.useraccount.vo.LoginAccountInfoVO;
 import me.zohar.lottery.useraccount.vo.LoginLogVO;
 
 @Slf4j
 @Service
-public class LoginLogService {
+public class LoginService {
 
 	public static final String 淘宝IP查询地址 = "http://ip.taobao.com/service/getIpInfo.php";
 
 	@Autowired
 	private LoginLogRepo loginLogRepo;
+
+	@Autowired
+	private UserAccountService userAccountService;
+
+	@Transactional
+	public void login(String userName, String password) {
+		LoginAccountInfoVO loginAccountInfo = userAccountService.getLoginAccountInfo(userName);
+		if (loginAccountInfo == null) {
+			throw new AuthenticationServiceException("用户名或密码不正确");
+		}
+		if (!new BCryptPasswordEncoder().matches(password, loginAccountInfo.getLoginPwd())) {
+			throw new AuthenticationServiceException(Constant.登录提示_用户名或密码不正确);
+		}
+		userAccountService.updateLatelyLoginTime(loginAccountInfo.getId());
+	}
 
 	@Transactional(readOnly = true)
 	public PageResult<LoginLogVO> findLoginLogByPage(LoginLogQueryCondParam param) {

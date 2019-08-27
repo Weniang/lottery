@@ -16,7 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgentUtil;
 import me.zohar.lottery.constants.Constant;
-import me.zohar.lottery.useraccount.service.LoginLogService;
+import me.zohar.lottery.useraccount.service.LoginService;
 import me.zohar.lottery.useraccount.service.UserAccountService;
 import me.zohar.lottery.useraccount.vo.LoginAccountInfoVO;
 
@@ -27,7 +27,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	private UserAccountService userAccountService;
 
 	@Autowired
-	private LoginLogService loginLogService;
+	private LoginService loginService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -37,17 +37,17 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String username = token.getName();
 		LoginAccountInfoVO loginAccountInfo = userAccountService.getLoginAccountInfo(username);
 		if (loginAccountInfo == null) {
-			loginLogService.recordLoginLog(username, Constant.登录状态_失败, Constant.登录提示_用户名不存在,
+			loginService.recordLoginLog(username, Constant.登录状态_失败, Constant.登录提示_用户名不存在,
 					HttpUtil.getClientIP(request), UserAgentUtil.parse(request.getHeader("User-Agent")));
 			throw new AuthenticationServiceException("用户名或密码不正确");
 		}
 		if (!new BCryptPasswordEncoder().matches(token.getCredentials().toString(), loginAccountInfo.getLoginPwd())) {
-			loginLogService.recordLoginLog(loginAccountInfo.getUserName(), Constant.登录状态_失败, Constant.登录提示_用户名或密码不正确,
+			loginService.recordLoginLog(loginAccountInfo.getUserName(), Constant.登录状态_失败, Constant.登录提示_用户名或密码不正确,
 					HttpUtil.getClientIP(request), UserAgentUtil.parse(request.getHeader("User-Agent")));
 			throw new AuthenticationServiceException(Constant.登录提示_用户名或密码不正确);
 		}
 
-		loginLogService.recordLoginLog(loginAccountInfo.getUserName(), Constant.登录状态_成功, Constant.登录提示_登录成功,
+		loginService.recordLoginLog(loginAccountInfo.getUserName(), Constant.登录状态_成功, Constant.登录提示_登录成功,
 				HttpUtil.getClientIP(request), UserAgentUtil.parse(request.getHeader("User-Agent")));
 		userAccountService.updateLatelyLoginTime(loginAccountInfo.getId());
 		UserAccountDetails userAccountDetails = new UserAccountDetails(loginAccountInfo);
