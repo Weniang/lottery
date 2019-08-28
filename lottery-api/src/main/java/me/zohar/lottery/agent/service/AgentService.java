@@ -26,6 +26,8 @@ import org.springframework.validation.annotation.Validated;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import me.zohar.lottery.agent.convert.ConvertVoWithAgent;
+import me.zohar.lottery.agent.convert.ConvertPoWithAgent;
 import me.zohar.lottery.agent.domain.InviteCode;
 import me.zohar.lottery.agent.domain.RebateAndOdds;
 import me.zohar.lottery.agent.domain.RebateAndOddsSituation;
@@ -71,7 +73,7 @@ public class AgentService {
 	@Transactional(readOnly = true)
 	public List<RebateAndOddsVO> findAllRebateAndOdds() {
 		List<RebateAndOdds> rebateAndOddses = rebateAndOddsRepo.findAll(Sort.by(Sort.Order.desc("rebate")));
-		return RebateAndOddsVO.convertFor(rebateAndOddses);
+		return ConvertVoWithAgent.convertRebateAndOdds(rebateAndOddses);
 	}
 
 	@Transactional(readOnly = true)
@@ -91,7 +93,7 @@ public class AgentService {
 		Page<RebateAndOddsSituation> result = rebateAndOddsSituationRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.asc("rebate"))));
 		PageResult<RebateAndOddsSituationVO> pageResult = new PageResult<>(
-				RebateAndOddsSituationVO.convertFor(result.getContent()), param.getPageNum(), param.getPageSize(),
+				ConvertVoWithAgent.convertRebateAndOddsSituation(result.getContent()), param.getPageNum(), param.getPageSize(),
 				result.getTotalElements());
 		return pageResult;
 	}
@@ -108,9 +110,8 @@ public class AgentService {
 		}
 
 		rebateAndOddsRepo.deleteAll();
-		Date now = new Date();
 		for (AddOrUpdateRebateAndOddsParam param : params) {
-			RebateAndOdds rebateAndOdds = param.convertToPo(now);
+			RebateAndOdds rebateAndOdds = ConvertPoWithAgent.convertToPo(param);
 			rebateAndOddsRepo.save(rebateAndOdds);
 		}
 	}
@@ -124,7 +125,7 @@ public class AgentService {
 	@Transactional(readOnly = true)
 	public RebateAndOddsVO findRebateAndOdds(@NotNull Double rebate, @NotNull Double odds) {
 		RebateAndOdds rebateAndOdds = rebateAndOddsRepo.findTopByRebateAndOdds(rebate, odds);
-		return RebateAndOddsVO.convertFor(rebateAndOdds);
+		return ConvertVoWithAgent.convertRebateAndOdds(rebateAndOdds);
 	}
 
 	@ParamValid
@@ -136,7 +137,7 @@ public class AgentService {
 			if (rebateAndOdds != null) {
 				throw new BizException(BizError.该返点赔率已存在);
 			}
-			RebateAndOdds newRebateAndOdds = param.convertToPo(new Date());
+			RebateAndOdds newRebateAndOdds = ConvertPoWithAgent.convertToPo(param);
 			rebateAndOddsRepo.save(newRebateAndOdds);
 		}
 		// 修改
@@ -173,7 +174,7 @@ public class AgentService {
 		if (userAccount != null) {
 			throw new BizException(BizError.用户名已存在);
 		}
-		UserAccount lowerLevelAccount = param.convertToPo(inviter.getAccountLevel() + 1);
+		UserAccount lowerLevelAccount = ConvertPoWithAgent.convertToPo(param, inviter.getAccountLevel() + 1);
 		userAccountRepo.save(lowerLevelAccount);
 	}
 
@@ -195,7 +196,7 @@ public class AgentService {
 		while (inviteCodeRepo.findTopByCodeAndPeriodOfValidityGreaterThanEqual(code, new Date()) != null) {
 			code = IdUtil.fastSimpleUUID().substring(0, 6);
 		}
-		InviteCode newInviteCode = param.convertToPo(code, setting.getEffectiveDuration());
+		InviteCode newInviteCode = ConvertPoWithAgent.convertToPo(param, code, setting.getEffectiveDuration());
 		inviteCodeRepo.save(newInviteCode);
 		return newInviteCode.getId();
 	}
@@ -203,7 +204,7 @@ public class AgentService {
 	@Transactional(readOnly = true)
 	public InviteCodeDetailsInfoVO getInviteCodeDetailsInfoById(@NotBlank String id) {
 		InviteCode inviteCode = inviteCodeRepo.getOne(id);
-		InviteCodeDetailsInfoVO inviteDetailsInfo = InviteCodeDetailsInfoVO.convertFor(inviteCode);
+		InviteCodeDetailsInfoVO inviteDetailsInfo = ConvertVoWithAgent.convertInviteCodeDetailsInfo(inviteCode);
 		return inviteDetailsInfo;
 	}
 

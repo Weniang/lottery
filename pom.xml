@@ -22,7 +22,6 @@
 
 	<modules>
 		<module>lottery-dto</module>
-		<module>lottery-convert</module>
 		<module>lottery-api</module>
 		<module>lottery-task</module>
 		<module>lottery-web</module>

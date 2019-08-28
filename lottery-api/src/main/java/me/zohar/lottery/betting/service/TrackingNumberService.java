@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
+import me.zohar.lottery.betting.convert.ConvertPoWithBetting;
+import me.zohar.lottery.betting.convert.ConvertVoWithBetting;
 import me.zohar.lottery.betting.domain.BettingOrder;
 import me.zohar.lottery.betting.domain.TrackingNumberContent;
 import me.zohar.lottery.betting.domain.TrackingNumberOrder;
@@ -29,8 +31,8 @@ import me.zohar.lottery.betting.domain.TrackingNumberSituation;
 import me.zohar.lottery.betting.param.BettingRecordParam;
 import me.zohar.lottery.betting.param.PlaceOrderParam;
 import me.zohar.lottery.betting.param.StartTrackingNumberParam;
-import me.zohar.lottery.betting.param.TrackingNumberSituationQueryCondParam;
 import me.zohar.lottery.betting.param.StartTrackingNumberParam.TrackingNumberPlanParam;
+import me.zohar.lottery.betting.param.TrackingNumberSituationQueryCondParam;
 import me.zohar.lottery.betting.repo.BettingOrderRepo;
 import me.zohar.lottery.betting.repo.TrackingNumberContentRepo;
 import me.zohar.lottery.betting.repo.TrackingNumberOrderRepo;
@@ -102,18 +104,18 @@ public class TrackingNumberService {
 			planParam.setBettingOrderId(bettingOrderId);
 		}
 		// 保存追号订单
-		TrackingNumberOrder trackingNumberOrder = startTrackingNumberParam.convertToPo(
+		TrackingNumberOrder trackingNumberOrder = ConvertPoWithBetting.convertToPo(startTrackingNumberParam,
 				startTrackingNumberParam.getPlans().get(0).getIssueNum(), totalBettingAmount, userAccountId);
 		trackingNumberOrderRepo.save(trackingNumberOrder);
 		// 保存追号计划
 		for (TrackingNumberPlanParam planParam : startTrackingNumberParam.getPlans()) {
-			TrackingNumberPlan plan = planParam.convertToPo(trackingNumberOrder.getId());
+			TrackingNumberPlan plan = ConvertPoWithBetting.convertToPo(planParam, trackingNumberOrder.getId());
 			trackingNumberPlanRepo.save(plan);
 		}
 		// 保存追号内容
 		for (BettingRecordParam bettingRecordParam : startTrackingNumberParam.getBettingRecords()) {
-			TrackingNumberContent trackingNumberContent = bettingRecordParam
-					.convertToTrackingNumberContentPo(trackingNumberOrder.getId());
+			TrackingNumberContent trackingNumberContent = ConvertPoWithBetting.convertToPo(bettingRecordParam,
+					trackingNumberOrder.getId());
 			trackingNumberContentRepo.save(trackingNumberContent);
 		}
 	}
@@ -165,8 +167,8 @@ public class TrackingNumberService {
 		Page<TrackingNumberSituation> result = trackingNumberSituationRepo.findAll(spec, PageRequest
 				.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.asc("trackingNumberTime"))));
 		PageResult<TrackingNumberSituationVO> pageResult = new PageResult<>(
-				TrackingNumberSituationVO.convertFor(result.getContent()), param.getPageNum(), param.getPageSize(),
-				result.getTotalElements());
+				ConvertVoWithBetting.convertTrackingNumberSituation(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 
@@ -182,7 +184,7 @@ public class TrackingNumberService {
 	@Transactional(readOnly = true)
 	public TrackingNumberOrderDetailsVO findTrackingNumberOrderDetails(String id) {
 		TrackingNumberSituation order = trackingNumberSituationRepo.getOne(id);
-		return TrackingNumberOrderDetailsVO.convertFor(order);
+		return ConvertVoWithBetting.convertTrackingNumberOrderDetails(order);
 	}
 
 	/**

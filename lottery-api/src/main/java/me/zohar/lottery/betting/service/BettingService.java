@@ -31,6 +31,8 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.zohar.lottery.agent.domain.RebateAndOdds;
 import me.zohar.lottery.agent.repo.RebateAndOddsRepo;
+import me.zohar.lottery.betting.convert.ConvertPoWithBetting;
+import me.zohar.lottery.betting.convert.ConvertVoWithBetting;
 import me.zohar.lottery.betting.domain.BettingOrder;
 import me.zohar.lottery.betting.domain.BettingRebate;
 import me.zohar.lottery.betting.domain.BettingRecord;
@@ -102,7 +104,7 @@ public class BettingService {
 		if (bettingOrders.size() < 50) {
 			bettingOrders = bettingOrderRepo.findTop50ByStateOrderByTotalWinningAmountDesc(Constant.投注订单状态_已中奖);
 		}
-		return WinningRankVO.convertFor(bettingOrders);
+		return ConvertVoWithBetting.convertWinningRank(bettingOrders);
 	}
 
 	@Transactional(readOnly = true)
@@ -120,7 +122,7 @@ public class BettingService {
 	@Transactional(readOnly = true)
 	public BettingOrderDetailsVO findBettingOrderDetails(String id) {
 		BettingOrder bettingOrder = bettingOrderRepo.getOne(id);
-		return BettingOrderDetailsVO.convertFor(bettingOrder);
+		return ConvertVoWithBetting.convertBettingOrderDetails(bettingOrder);
 	}
 
 	/**
@@ -178,8 +180,9 @@ public class BettingService {
 		};
 		Page<BettingOrder> result = bettingOrderRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("bettingTime"))));
-		PageResult<BettingOrderInfoVO> pageResult = new PageResult<>(BettingOrderInfoVO.convertFor(result.getContent()),
-				param.getPageNum(), param.getPageSize(), result.getTotalElements());
+		PageResult<BettingOrderInfoVO> pageResult = new PageResult<>(
+				ConvertVoWithBetting.convertBettingOrderInfo(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 
@@ -192,7 +195,7 @@ public class BettingService {
 		List<BettingRecord> bettingRecords = bettingRecordRepo
 				.findTop5ByBettingOrder_UserAccountIdAndBettingOrder_GameCodeAndBettingOrder_BettingTimeGreaterThanEqualOrderByBettingOrder_BettingTimeDesc(
 						userAccountId, gameCode, bettingTime);
-		return BettingRecordVO.convertFor(bettingRecords);
+		return ConvertVoWithBetting.convertBettingRecord(bettingRecords);
 	}
 
 	@ParamValid
@@ -259,7 +262,7 @@ public class BettingService {
 			odds = NumberUtil.round(odds * accountOdds, 4).doubleValue();
 			double bettingAmount = NumberUtil.round(bettingRecordParam.getBettingCount()
 					* placeOrderParam.getBaseAmount() * placeOrderParam.getMultiple(), 4).doubleValue();
-			bettingRecords.add(bettingRecordParam.convertToPo(bettingAmount, odds));
+			bettingRecords.add(ConvertPoWithBetting.convertToPo(bettingRecordParam, bettingAmount, odds));
 			totalBettingCount += bettingRecordParam.getBettingCount();
 			totalBettingAmount += bettingAmount;
 		}
@@ -268,8 +271,8 @@ public class BettingService {
 			throw new BizException(BizError.余额不足);
 		}
 
-		BettingOrder bettingOrder = placeOrderParam.convertToPo(bettingIssue.getId(), totalBettingCount,
-				totalBettingAmount, userAccountId);
+		BettingOrder bettingOrder = ConvertPoWithBetting.convertToPo(placeOrderParam, bettingIssue.getId(),
+				totalBettingCount, totalBettingAmount, userAccountId);
 		bettingOrderRepo.save(bettingOrder);
 		for (BettingRecord bettingRecord : bettingRecords) {
 			bettingRecord.setBettingOrderId(bettingOrder.getId());
@@ -541,8 +544,9 @@ public class BettingService {
 		};
 		Page<BettingOrder> result = bettingOrderRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("bettingTime"))));
-		PageResult<BettingOrderInfoVO> pageResult = new PageResult<>(BettingOrderInfoVO.convertFor(result.getContent()),
-				param.getPageNum(), param.getPageSize(), result.getTotalElements());
+		PageResult<BettingOrderInfoVO> pageResult = new PageResult<>(
+				ConvertVoWithBetting.convertBettingOrderInfo(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 
