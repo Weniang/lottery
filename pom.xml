@@ -21,11 +21,15 @@
 	</parent>
 
 	<modules>
+		<module>lottery-dto</module>
+		<module>lottery-convert</module>
 		<module>lottery-api</module>
 		<module>lottery-task</module>
 		<module>lottery-web</module>
 		<module>lottery-mobile</module>
 		<module>lottery-admin</module>
 		<module>lottery-web-front</module>
+		<module>lottery-eureka-server</module>
+		<module>lottery-web-client</module>
 	</modules>
 </project>

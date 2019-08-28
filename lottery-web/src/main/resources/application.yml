@@ -1,6 +1,8 @@
 server:
   port: 8088
 spring:
+  application:
+    name: lottery-web
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/lottery?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
@@ -17,6 +19,8 @@ spring:
   redis:
     port: 6379
     host: localhost
+  main:
+    allow-bean-definition-overriding: true
 jetcache:
   areaInCacheName: false
   local:
@@ -28,3 +32,9 @@ jetcache:
       type: redis.lettuce
       keyConvertor: fastjson
       uri: redis://127.0.0.1:6379/
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
