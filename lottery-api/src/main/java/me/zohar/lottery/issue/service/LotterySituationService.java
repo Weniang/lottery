@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.issue.convert.ConvertVoWithIssue;
 import me.zohar.lottery.issue.domain.LotterySituation;
 import me.zohar.lottery.issue.param.LotterySituationQueryCondParam;
 import me.zohar.lottery.issue.repo.LotterySituationRepo;
@@ -32,7 +33,7 @@ public class LotterySituationService {
 	private LotterySituationRepo lotterySituationRepo;
 
 	public LotterySituationVO findLotterySituationById(String id) {
-		return LotterySituationVO.convertFor(lotterySituationRepo.getOne(id));
+		return ConvertVoWithIssue.convertLotterySituation(lotterySituationRepo.getOne(id));
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class LotterySituationService {
 		};
 		Page<LotterySituation> result = lotterySituationRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.asc("startTime"))));
-		PageResult<LotterySituationVO> pageResult = new PageResult<>(LotterySituationVO.convertFor(result.getContent()),
+		PageResult<LotterySituationVO> pageResult = new PageResult<>(ConvertVoWithIssue.convertLotterySituation(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}

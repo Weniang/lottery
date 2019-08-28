@@ -18,6 +18,7 @@ import cn.hutool.core.util.StrUtil;
 import me.zohar.lottery.common.exception.BizError;
 import me.zohar.lottery.common.exception.BizException;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.statisticalanalysis.convert.ConvertVoWithStatisticAlanalysis;
 import me.zohar.lottery.statisticalanalysis.param.AccountProfitAndLossQueryCondParam;
 import me.zohar.lottery.statisticalanalysis.vo.AccountProfitAndLossVO;
 import me.zohar.lottery.useraccount.domain.UserAccount;
@@ -87,8 +88,8 @@ public class StatisticalAnalysisService {
 		query.setFirstResult((param.getPageNum() - 1) * param.getPageSize());
 		query.setMaxResults(param.getPageSize());
 		List<Object[]> result = query.getResultList();
-		PageResult<AccountProfitAndLossVO> pageResult = new PageResult<>(AccountProfitAndLossVO.convertFor(result),
-				param.getPageNum(), param.getPageSize(), total);
+		PageResult<AccountProfitAndLossVO> pageResult = new PageResult<>(
+				ConvertVoWithStatisticAlanalysis.convertFor(result), param.getPageNum(), param.getPageSize(), total);
 		return pageResult;
 	}
 

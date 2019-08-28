@@ -31,6 +31,7 @@ import me.zohar.lottery.common.utils.IdUtils;
 import me.zohar.lottery.common.utils.ThreadPoolUtils;
 import me.zohar.lottery.common.vo.PageResult;
 import me.zohar.lottery.constants.Constant;
+import me.zohar.lottery.useraccount.convert.ConvertVoWithUserAccount;
 import me.zohar.lottery.useraccount.domain.LoginLog;
 import me.zohar.lottery.useraccount.param.LoginLogQueryCondParam;
 import me.zohar.lottery.useraccount.repo.LoginLogRepo;
@@ -93,7 +94,7 @@ public class LoginService {
 		};
 		Page<LoginLog> result = loginLogRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("loginTime"))));
-		PageResult<LoginLogVO> pageResult = new PageResult<>(LoginLogVO.convertFor(result.getContent()),
+		PageResult<LoginLogVO> pageResult = new PageResult<>(ConvertVoWithUserAccount.convertLoginLog(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}

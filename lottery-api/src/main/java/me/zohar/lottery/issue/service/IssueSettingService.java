@@ -10,6 +10,8 @@ import cn.hutool.core.util.StrUtil;
 import me.zohar.lottery.common.exception.BizError;
 import me.zohar.lottery.common.exception.BizException;
 import me.zohar.lottery.common.valid.ParamValid;
+import me.zohar.lottery.issue.convert.ConvertPoWithIssue;
+import me.zohar.lottery.issue.convert.ConvertVoWithIssue;
 import me.zohar.lottery.issue.domain.IssueGenerateRule;
 import me.zohar.lottery.issue.domain.IssueSetting;
 import me.zohar.lottery.issue.param.IssueGenerateRuleParam;
@@ -29,7 +31,7 @@ public class IssueSettingService {
 
 	public IssueSettingDetailsVO getIssueSettingDetailsByGameId(String gameId) {
 		IssueSetting issueSetting = issueSettingRepo.findByGameId(gameId);
-		return IssueSettingDetailsVO.convertFor(issueSetting);
+		return ConvertVoWithIssue.convertIssueSettingDetails(issueSetting);
 	}
 
 	@ParamValid
@@ -42,11 +44,11 @@ public class IssueSettingService {
 				throw new BizException(BizError.期号设置已存在);
 			}
 
-			IssueSetting issueSetting = issueSettingParam.convertToPo();
+			IssueSetting issueSetting = ConvertPoWithIssue.convertToPo(issueSettingParam);
 			issueSettingRepo.save(issueSetting);
 			for (int i = 0; i < issueSettingParam.getIssueGenerateRules().size(); i++) {
 				IssueGenerateRuleParam issueGenerateRuleParam = issueSettingParam.getIssueGenerateRules().get(i);
-				IssueGenerateRule issueGenerateRule = issueGenerateRuleParam.convertToPo();
+				IssueGenerateRule issueGenerateRule = ConvertPoWithIssue.convertToPo(issueGenerateRuleParam);
 				issueGenerateRule.setIssueSettingId(issueSetting.getId());
 				issueGenerateRule.setOrderNo((double) (i + 1));
 				issueGenerateRuleRepo.save(issueGenerateRule);
@@ -63,7 +65,7 @@ public class IssueSettingService {
 			issueSettingRepo.save(issueSetting);
 			for (int i = 0; i < issueSettingParam.getIssueGenerateRules().size(); i++) {
 				IssueGenerateRuleParam issueGenerateRuleParam = issueSettingParam.getIssueGenerateRules().get(i);
-				IssueGenerateRule issueGenerateRule = issueGenerateRuleParam.convertToPo();
+				IssueGenerateRule issueGenerateRule = ConvertPoWithIssue.convertToPo(issueGenerateRuleParam);
 				issueGenerateRule.setIssueSettingId(issueSetting.getId());
 				issueGenerateRule.setOrderNo((double) (i + 1));
 				issueGenerateRuleRepo.save(issueGenerateRule);

@@ -24,6 +24,8 @@ import me.zohar.lottery.dictconfig.domain.DictItem;
 import me.zohar.lottery.dictconfig.domain.DictType;
 import me.zohar.lottery.dictconfig.repo.DictItemRepo;
 import me.zohar.lottery.dictconfig.repo.DictTypeRepo;
+import me.zohar.lottery.game.convert.ConvertPoWithGame;
+import me.zohar.lottery.game.convert.ConvertVoWithGame;
 import me.zohar.lottery.game.domain.Game;
 import me.zohar.lottery.game.domain.GameCategory;
 import me.zohar.lottery.game.domain.GamePlay;
@@ -86,20 +88,20 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public List<GameSituationVO> findTop5HotGame() {
 		List<GameSituation> gameSituations = gameSituationRepo.findTop5ByOrderByHotGameFlagDesc();
-		return GameSituationVO.convertFor(gameSituations);
+		return ConvertVoWithGame.convertGameSituation(gameSituations);
 	}
 
 	@Transactional(readOnly = true)
 	public List<GameSituationVO> findAllGameSituation() {
 		List<GameSituation> gameSituations = gameSituationRepo.findByOrderByHotGameFlagDesc();
-		return GameSituationVO.convertFor(gameSituations);
+		return ConvertVoWithGame.convertGameSituation(gameSituations);
 	}
 
 	@Transactional(readOnly = true)
 	public List<GameSituationVO> findGameSituationByGameCategoryId(String gameCategoryId) {
 		List<GameSituation> gameSituations = gameSituationRepo
 				.findByGameCategoryIdOrderByHotGameFlagDesc(gameCategoryId);
-		return GameSituationVO.convertFor(gameSituations);
+		return ConvertVoWithGame.convertGameSituation(gameSituations);
 	}
 
 	@Transactional
@@ -141,7 +143,7 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public List<GameVO> findAllGame() {
 		List<Game> games = gameRepo.findAll(Sort.by(Sort.Order.asc("orderNo")));
-		return GameVO.convertFor(games);
+		return ConvertVoWithGame.convertGame(games);
 	}
 
 	@Transactional(readOnly = true)
@@ -149,13 +151,13 @@ public class GameService {
 		if (StrUtil.isBlank(gameCategoryId)) {
 			return findAllGame();
 		}
-		return GameVO.convertFor(gameRepo.findByGameCategoryIdOrderByOrderNoAsc(gameCategoryId));
+		return ConvertVoWithGame.convertGame(gameRepo.findByGameCategoryIdOrderByOrderNoAsc(gameCategoryId));
 	}
 
 	@Transactional(readOnly = true)
 	public List<GameVO> findAllOpenGame() {
 		List<Game> games = gameRepo.findByStateOrderByOrderNo(Constant.游戏状态_启用);
-		return GameVO.convertFor(games);
+		return ConvertVoWithGame.convertGame(games);
 	}
 
 	@Transactional
@@ -176,13 +178,13 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public GameVO findGameById(String id) {
 		Game game = gameRepo.getOne(id);
-		return GameVO.convertFor(game);
+		return ConvertVoWithGame.convertGame(game);
 	}
 
 	@Transactional(readOnly = true)
 	public GameVO findGameByGameCode(@NotBlank String gameCode) {
 		Game game = gameRepo.findByGameCode(gameCode);
-		return GameVO.convertFor(game);
+		return ConvertVoWithGame.convertGame(game);
 	}
 
 	@Transactional(readOnly = true)
@@ -190,7 +192,7 @@ public class GameService {
 		List<GamePlayVO> vos = new ArrayList<>();
 		List<GamePlay> gamePlays = gamePlayRepo.findByGameCodeOrderByOrderNo(gameCode);
 		for (GamePlay gamePlay : gamePlays) {
-			GamePlayVO vo = GamePlayVO.convertFor(gamePlay);
+			GamePlayVO vo = ConvertVoWithGame.convertGamePlay(gamePlay);
 			vos.add(vo);
 		}
 		return vos;
@@ -201,7 +203,7 @@ public class GameService {
 		List<GamePlayVO> vos = new ArrayList<>();
 		List<GamePlay> gamePlays = gamePlayRepo.findByGameCodeOrderByOrderNo(gameCode);
 		for (GamePlay gamePlay : gamePlays) {
-			vos.add(GamePlayVO.buildGamePlayDetails(gamePlay));
+			vos.add(ConvertVoWithGame.buildGamePlayDetails(gamePlay));
 		}
 		return vos;
 	}
@@ -209,7 +211,7 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public GamePlayVO findGamePlayDetailsById(String id) {
 		GamePlay gamePlay = gamePlayRepo.getOne(id);
-		return GamePlayVO.buildGamePlayDetails(gamePlay);
+		return ConvertVoWithGame.buildGamePlayDetails(gamePlay);
 	}
 
 	@Transactional
@@ -244,7 +246,7 @@ public class GameService {
 			if (existGame != null) {
 				throw new BizException(BizError.游戏代码已存在);
 			}
-			Game game = gameParam.convertToPo();
+			Game game = ConvertPoWithGame.convertToPo(gameParam);
 			gameRepo.save(game);
 			copyGamePlay(game, gameParam.getCopyGameCode());
 		}
@@ -322,18 +324,18 @@ public class GameService {
 			if (existGamePlay != null) {
 				throw new BizException(BizError.游戏玩法代码已存在);
 			}
-			GamePlay gamePlay = gamePlayParam.convertToPo();
+			GamePlay gamePlay = ConvertPoWithGame.convertToPo(gamePlayParam);
 			gamePlayRepo.save(gamePlay);
 			for (int i = 0; i < gamePlayParam.getNumLocates().size(); i++) {
 				NumLocateParam numLocateParam = gamePlayParam.getNumLocates().get(i);
-				NumLocate numLocate = numLocateParam.convertToPo();
+				NumLocate numLocate = ConvertPoWithGame.convertToPo(numLocateParam);
 				numLocate.setOrderNo((double) (i + 1));
 				numLocate.setGamePlayId(gamePlay.getId());
 				numLocateRepo.save(numLocate);
 
 				for (int j = 0; j < numLocateParam.getOptionalNums().size(); j++) {
 					OptionalNumParam optionalNumParam = numLocateParam.getOptionalNums().get(j);
-					OptionalNum optionalNum = optionalNumParam.convertToPo();
+					OptionalNum optionalNum = ConvertPoWithGame.convertToPo(optionalNumParam);
 					optionalNum.setOrderNo((double) (j + 1));
 					optionalNum.setNumLocateId(numLocate.getId());
 					optionalNumRepo.save(optionalNum);
@@ -358,14 +360,14 @@ public class GameService {
 			gamePlayRepo.save(gamePlay);
 			for (int i = 0; i < gamePlayParam.getNumLocates().size(); i++) {
 				NumLocateParam numLocateParam = gamePlayParam.getNumLocates().get(i);
-				NumLocate numLocate = numLocateParam.convertToPo();
+				NumLocate numLocate = ConvertPoWithGame.convertToPo(numLocateParam);
 				numLocate.setOrderNo((double) (i + 1));
 				numLocate.setGamePlayId(gamePlay.getId());
 				numLocateRepo.save(numLocate);
 
 				for (int j = 0; j < numLocateParam.getOptionalNums().size(); j++) {
 					OptionalNumParam optionalNumParam = numLocateParam.getOptionalNums().get(j);
-					OptionalNum optionalNum = optionalNumParam.convertToPo();
+					OptionalNum optionalNum = ConvertPoWithGame.convertToPo(optionalNumParam);
 					optionalNum.setOrderNo((double) (j + 1));
 					optionalNum.setNumLocateId(numLocate.getId());
 					optionalNumRepo.save(optionalNum);
@@ -375,7 +377,7 @@ public class GameService {
 	}
 
 	public List<GameCategoryVO> findAllGameCategory() {
-		return GameCategoryVO.convertFor(gameCategoryRepo.findByOrderByOrderNo());
+		return ConvertVoWithGame.convertGameCategory(gameCategoryRepo.findByOrderByOrderNo());
 	}
 
 	@ParamValid
@@ -388,7 +390,7 @@ public class GameService {
 			if (existGameCategory != null) {
 				throw new BizException(BizError.游戏类别代码已存在);
 			}
-			GameCategory gameCategory = gameCategoryParam.convertToPo();
+			GameCategory gameCategory = ConvertPoWithGame.convertToPo(gameCategoryParam);
 			gameCategoryRepo.save(gameCategory);
 		}
 		// 修改
@@ -417,7 +419,7 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public GameCategoryVO findGameCategoryById(String id) {
 		GameCategory gameCategory = gameCategoryRepo.getOne(id);
-		return GameCategoryVO.convertFor(gameCategory);
+		return ConvertVoWithGame.convertGameCategory(gameCategory);
 	}
 
 }

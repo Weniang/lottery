@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.hutool.core.util.StrUtil;
 import me.zohar.lottery.common.valid.ParamValid;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.systemnotice.convert.ConvertPoWithSystemNotice;
+import me.zohar.lottery.systemnotice.convert.ConvertVoWithSystemNotice;
 import me.zohar.lottery.systemnotice.domain.SystemNotice;
 import me.zohar.lottery.systemnotice.param.AddOrUpdateSystemNoticeParam;
 import me.zohar.lottery.systemnotice.param.SystemNoticeQueryCondParam;
@@ -52,8 +54,9 @@ public class SystemNoticeService {
 		};
 		Page<SystemNotice> result = systemNoticeRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("createTime"))));
-		PageResult<SystemNoticeVO> pageResult = new PageResult<>(SystemNoticeVO.convertFor(result.getContent()),
-				param.getPageNum(), param.getPageSize(), result.getTotalElements());
+		PageResult<SystemNoticeVO> pageResult = new PageResult<>(
+				ConvertVoWithSystemNotice.convertFor(result.getContent()), param.getPageNum(), param.getPageSize(),
+				result.getTotalElements());
 		return pageResult;
 	}
 
@@ -62,7 +65,7 @@ public class SystemNoticeService {
 	public void addOrUpdateSystemNotice(AddOrUpdateSystemNoticeParam param) {
 		// 新增
 		if (StrUtil.isBlank(param.getId())) {
-			SystemNotice systemNotice = param.convertToPo();
+			SystemNotice systemNotice = ConvertPoWithSystemNotice.convertToPo(param);
 			systemNoticeRepo.save(systemNotice);
 		}
 		// 修改
@@ -80,11 +83,11 @@ public class SystemNoticeService {
 
 	@Transactional(readOnly = true)
 	public SystemNoticeVO findSystemNoticeById(@NotBlank String id) {
-		return SystemNoticeVO.convertFor(systemNoticeRepo.getOne(id));
+		return ConvertVoWithSystemNotice.convertFor(systemNoticeRepo.getOne(id));
 	}
 
 	public List<SystemNoticeVO> findTop5PublishedSystemNotice() {
-		return SystemNoticeVO
+		return ConvertVoWithSystemNotice
 				.convertFor(systemNoticeRepo.findTop5ByPublishDateLessThanOrderByPublishDateDesc(new Date()));
 	}
 

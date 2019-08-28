@@ -23,6 +23,8 @@ import com.alicp.jetcache.anno.Cached;
 import cn.hutool.core.util.StrUtil;
 import me.zohar.lottery.common.valid.ParamValid;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.dictconfig.convert.ConvertPoWithDictConfig;
+import me.zohar.lottery.dictconfig.convert.ConvertVoWithDictConfig;
 import me.zohar.lottery.dictconfig.domain.ConfigItem;
 import me.zohar.lottery.dictconfig.param.ConfigItemQueryCondParam;
 import me.zohar.lottery.dictconfig.param.ConfigParam;
@@ -56,7 +58,7 @@ public class ConfigService {
 		};
 		Page<ConfigItem> result = configItemRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("configCode"))));
-		PageResult<ConfigItemVO> pageResult = new PageResult<>(ConfigItemVO.convertFor(result.getContent()),
+		PageResult<ConfigItemVO> pageResult = new PageResult<>(ConvertVoWithDictConfig.convertConfigItem(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
@@ -64,13 +66,13 @@ public class ConfigService {
 	@Cached(name = "configItem_", key = "#configCode", expire = 3600)
 	@Transactional(readOnly = true)
 	public ConfigItemVO findConfigItemByConfigCode(String configCode) {
-		return ConfigItemVO.convertFor(configItemRepo.findByConfigCode(configCode));
+		return ConvertVoWithDictConfig.convertConfigItem(configItemRepo.findByConfigCode(configCode));
 	}
 
 	@ParamValid
 	@Transactional(readOnly = true)
 	public ConfigItemVO findConfigItemById(@NotBlank String id) {
-		return ConfigItemVO.convertFor(configItemRepo.getOne(id));
+		return ConvertVoWithDictConfig.convertConfigItem(configItemRepo.getOne(id));
 	}
 
 	@ParamValid
@@ -78,7 +80,7 @@ public class ConfigService {
 	public void addOrUpdateConfig(ConfigParam configParam) {
 		// 新增
 		if (StrUtil.isBlank(configParam.getId())) {
-			ConfigItem configItem = configParam.convertToPo();
+			ConfigItem configItem = ConvertPoWithDictConfig.convertToPo(configParam);
 			configItemRepo.save(configItem);
 		}
 		// 修改

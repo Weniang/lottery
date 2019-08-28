@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import lombok.extern.slf4j.Slf4j;
+import me.zohar.lottery.mastercontrol.convert.ConvertVoWithMasterControl;
 import me.zohar.lottery.mastercontrol.domain.InviteRegisterSetting;
 import me.zohar.lottery.mastercontrol.domain.RechargeSetting;
 import me.zohar.lottery.mastercontrol.domain.RegisterAmountSetting;
@@ -45,7 +46,7 @@ public class MasterControlService {
 	@Transactional(readOnly = true)
 	public InviteRegisterSettingVO getInviteRegisterSetting() {
 		InviteRegisterSetting setting = inviteRegisterSettingRepo.findTopByOrderByEnabled();
-		return InviteRegisterSettingVO.convertFor(setting);
+		return ConvertVoWithMasterControl.convertInviteRegisterSetting(setting);
 	}
 
 	@Transactional
@@ -62,7 +63,7 @@ public class MasterControlService {
 	@Transactional(readOnly = true)
 	public RegisterAmountSettingVO getRegisterAmountSetting() {
 		RegisterAmountSetting setting = registerAmountSettingRepo.findTopByOrderByEnabled();
-		return RegisterAmountSettingVO.convertFor(setting);
+		return ConvertVoWithMasterControl.convertRegisterAmountSetting(setting);
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class MasterControlService {
 	@Transactional(readOnly = true)
 	public RechargeSettingVO getRechargeSetting() {
 		RechargeSetting setting = rechargeSettingRepo.findTopByOrderByLatelyUpdateTime();
-		return RechargeSettingVO.convertFor(setting);
+		return ConvertVoWithMasterControl.convertRechargeSetting(setting);
 	}
 
 	@Transactional

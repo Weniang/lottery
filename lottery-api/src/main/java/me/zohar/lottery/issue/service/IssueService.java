@@ -31,6 +31,7 @@ import me.zohar.lottery.common.utils.IdUtils;
 import me.zohar.lottery.common.utils.ThreadPoolUtils;
 import me.zohar.lottery.common.valid.ParamValid;
 import me.zohar.lottery.constants.Constant;
+import me.zohar.lottery.issue.convert.ConvertVoWithIssue;
 import me.zohar.lottery.issue.domain.Issue;
 import me.zohar.lottery.issue.domain.IssueGenerateRule;
 import me.zohar.lottery.issue.domain.IssueSetting;
@@ -113,7 +114,7 @@ public class IssueService {
 	 */
 	public List<IssueVO> findLatelyThe5TimeIssue(String gameCode) {
 		List<Issue> issues = issueRepo.findTop5ByGameCodeAndEndTimeLessThanOrderByIssueNumDesc(gameCode, new Date());
-		return IssueVO.convertFor(issues);
+		return ConvertVoWithIssue.convertIssue(issues);
 	}
 
 	/**
@@ -123,7 +124,7 @@ public class IssueService {
 	 */
 	public List<IssueVO> findLatelyThe50TimeIssue(String gameCode) {
 		List<Issue> issues = issueRepo.findTop50ByGameCodeAndEndTimeLessThanOrderByIssueNumDesc(gameCode, new Date());
-		return IssueVO.convertFor(issues);
+		return ConvertVoWithIssue.convertIssue(issues);
 	}
 
 	/**
@@ -134,7 +135,7 @@ public class IssueService {
 	public IssueVO getNextIssue(String gameCode) {
 		Date now = new Date();
 		Issue nextIssue = issueRepo.findTopByGameCodeAndStartTimeGreaterThanOrderByLotteryTimeAsc(gameCode, now);
-		return IssueVO.convertFor(nextIssue);
+		return ConvertVoWithIssue.convertIssue(nextIssue);
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class IssueService {
 		Date now = new Date();
 		Issue currentIssue = issueRepo.findTopByGameCodeAndStartTimeLessThanEqualAndEndTimeGreaterThan(gameCode, now,
 				now);
-		return IssueVO.convertFor(currentIssue);
+		return ConvertVoWithIssue.convertIssue(currentIssue);
 	}
 
 	/**
@@ -159,11 +160,11 @@ public class IssueService {
 		if (currentIssue == null) {
 			Issue latelyIssue = issueRepo.findTopByGameCodeAndEndTimeLessThanEqualOrderByEndTimeDesc(gameCode,
 					new Date());
-			return IssueVO.convertFor(latelyIssue);
+			return ConvertVoWithIssue.convertIssue(latelyIssue);
 		}
 		Issue latelyIssue = issueRepo.findTopByGameCodeAndIssueNumLessThanOrderByIssueNumDesc(gameCode,
 				currentIssue.getIssueNum());
-		return IssueVO.convertFor(latelyIssue);
+		return ConvertVoWithIssue.convertIssue(latelyIssue);
 	}
 
 	@Transactional
@@ -273,18 +274,18 @@ public class IssueService {
 		}
 		List<Issue> issues = issueRepo.findByGameCodeAndLotteryDateAndLotteryTimeGreaterThanEqualOrderByLotteryTimeAsc(
 				gameCode, currentIssue.getLotteryDate(), currentIssue.getLotteryTime());
-		return IssueVO.convertFor(issues);
+		return ConvertVoWithIssue.convertIssue(issues);
 	}
 
 	public IssueVO findByGameCodeAndIssueNum(String gameCode, Long issueNum) {
-		return IssueVO.convertFor(issueRepo.findByGameCodeAndIssueNum(gameCode, issueNum));
+		return ConvertVoWithIssue.convertIssue(issueRepo.findByGameCodeAndIssueNum(gameCode, issueNum));
 	}
 
 	@ParamValid
 	public List<LotteryHistoryVO> findLotteryHistory(LotteryHistoryParam param) {
 		List<Issue> issues = issueRepo.findByGameCodeAndLotteryDateAndEndTimeLessThanEqualOrderByEndTimeDesc(
 				param.getGameCode(), param.getLotteryDate(), new Date());
-		return LotteryHistoryVO.convertFor(issues);
+		return ConvertVoWithIssue.convertLotteryHistory(issues);
 	}
 
 }

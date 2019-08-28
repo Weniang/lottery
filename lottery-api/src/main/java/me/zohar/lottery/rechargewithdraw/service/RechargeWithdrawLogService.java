@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.rechargewithdraw.convert.ConvertVoWithRechargeWithdraw;
 import me.zohar.lottery.rechargewithdraw.domain.RechargeWithdrawLog;
 import me.zohar.lottery.rechargewithdraw.param.RechargeWithdrawLogQueryCondParam;
 import me.zohar.lottery.rechargewithdraw.repo.RechargeWithdrawLogRepo;
@@ -67,7 +68,7 @@ public class RechargeWithdrawLogService {
 		Page<RechargeWithdrawLog> result = rechargeWithdrawLogRepo.findAll(spec, PageRequest.of(param.getPageNum() - 1,
 				param.getPageSize(), Sort.by(Sort.Order.desc("submitTime"))));
 		PageResult<RechargeWithdrawLogVO> pageResult = new PageResult<>(
-				RechargeWithdrawLogVO.convertFor(result.getContent()), param.getPageNum(), param.getPageSize(),
+				ConvertVoWithRechargeWithdraw.convertRechargeWithdrawLog(result.getContent()), param.getPageNum(), param.getPageSize(),
 				result.getTotalElements());
 		return pageResult;
 	}

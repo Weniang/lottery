@@ -36,6 +36,8 @@ import me.zohar.lottery.mastercontrol.domain.InviteRegisterSetting;
 import me.zohar.lottery.mastercontrol.domain.RegisterAmountSetting;
 import me.zohar.lottery.mastercontrol.repo.InviteRegisterSettingRepo;
 import me.zohar.lottery.mastercontrol.repo.RegisterAmountSettingRepo;
+import me.zohar.lottery.useraccount.convert.ConvertPoWithUserAccount;
+import me.zohar.lottery.useraccount.convert.ConvertVoWithUserAccount;
 import me.zohar.lottery.useraccount.domain.AccountChangeLog;
 import me.zohar.lottery.useraccount.domain.UserAccount;
 import me.zohar.lottery.useraccount.param.AccountChangeLogQueryCondParam;
@@ -106,7 +108,7 @@ public class UserAccountService {
 	@Transactional(readOnly = true)
 	public UserAccountDetailsInfoVO findUserAccountDetailsInfoById(String userAccountId) {
 		UserAccount userAccount = userAccountRepo.getOne(userAccountId);
-		return UserAccountDetailsInfoVO.convertFor(userAccount);
+		return ConvertVoWithUserAccount.convertUserAccountDetailsInfo(userAccount);
 	}
 
 	@Transactional(readOnly = true)
@@ -131,8 +133,8 @@ public class UserAccountService {
 		Page<UserAccount> result = userAccountRepo.findAll(spec, PageRequest.of(param.getPageNum() - 1,
 				param.getPageSize(), Sort.by(Sort.Order.desc("registeredTime"))));
 		PageResult<UserAccountDetailsInfoVO> pageResult = new PageResult<>(
-				UserAccountDetailsInfoVO.convertFor(result.getContent()), param.getPageNum(), param.getPageSize(),
-				result.getTotalElements());
+				ConvertVoWithUserAccount.convertUserAccountDetailsInfo(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 
@@ -187,17 +189,17 @@ public class UserAccountService {
 
 	@Transactional(readOnly = true)
 	public LoginAccountInfoVO getLoginAccountInfo(String userName) {
-		return LoginAccountInfoVO.convertFor(userAccountRepo.findByUserName(userName));
+		return ConvertVoWithUserAccount.convertLoginAccountInfo(userAccountRepo.findByUserName(userName));
 	}
 
 	@Transactional(readOnly = true)
 	public UserAccountInfoVO getUserAccountInfo(String userAccountId) {
-		return UserAccountInfoVO.convertFor(userAccountRepo.getOne(userAccountId));
+		return ConvertVoWithUserAccount.convertUserAccountInfo(userAccountRepo.getOne(userAccountId));
 	}
 
 	@Transactional(readOnly = true)
 	public BankInfoVO getBankInfo(String userAccountId) {
-		return BankInfoVO.convertFor(userAccountRepo.getOne(userAccountId));
+		return ConvertVoWithUserAccount.convertBankInfo(userAccountRepo.getOne(userAccountId));
 	}
 
 	@ParamValid
@@ -209,7 +211,7 @@ public class UserAccountService {
 		}
 		String encodePwd = new BCryptPasswordEncoder().encode(param.getLoginPwd());
 		param.setLoginPwd(encodePwd);
-		UserAccount newUserAccount = param.convertToPo();
+		UserAccount newUserAccount = ConvertPoWithUserAccount.convertToPo(param);
 		if (StrUtil.isNotBlank(param.getInviterUserName())) {
 			UserAccount inviter = userAccountRepo.findByUserName(param.getInviterUserName());
 			if (inviter == null) {
@@ -248,7 +250,7 @@ public class UserAccountService {
 			throw new BizException(BizError.用户名已存在);
 		}
 		param.setLoginPwd(new BCryptPasswordEncoder().encode(param.getLoginPwd()));
-		UserAccount newUserAccount = param.convertToPo();
+		UserAccount newUserAccount = ConvertPoWithUserAccount.convertToPo(param);
 		InviteRegisterSetting setting = inviteRegisterSettingRepo.findTopByOrderByEnabled();
 		if (setting != null && setting.getEnabled()) {
 			InviteCode inviteCode = inviteCodeRepo
@@ -293,8 +295,9 @@ public class UserAccountService {
 		};
 		Page<AccountChangeLog> result = accountChangeLogRepo.findAll(spec, PageRequest.of(param.getPageNum() - 1,
 				param.getPageSize(), Sort.by(Sort.Order.desc("accountChangeTime"), Sort.Order.desc("issueNum"))));
-		PageResult<AccountChangeLogVO> pageResult = new PageResult<>(AccountChangeLogVO.convertFor(result.getContent()),
-				param.getPageNum(), param.getPageSize(), result.getTotalElements());
+		PageResult<AccountChangeLogVO> pageResult = new PageResult<>(
+				ConvertVoWithUserAccount.convertAccountChangeLog(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 
@@ -344,8 +347,8 @@ public class UserAccountService {
 		Page<UserAccount> result = userAccountRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.asc("registeredTime"))));
 		PageResult<UserAccountDetailsInfoVO> pageResult = new PageResult<>(
-				UserAccountDetailsInfoVO.convertFor(result.getContent()), param.getPageNum(), param.getPageSize(),
-				result.getTotalElements());
+				ConvertVoWithUserAccount.convertUserAccountDetailsInfo(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 
@@ -400,8 +403,9 @@ public class UserAccountService {
 		};
 		Page<AccountChangeLog> result = accountChangeLogRepo.findAll(spec, PageRequest.of(param.getPageNum() - 1,
 				param.getPageSize(), Sort.by(Sort.Order.desc("accountChangeTime"), Sort.Order.desc("issueNum"))));
-		PageResult<AccountChangeLogVO> pageResult = new PageResult<>(AccountChangeLogVO.convertFor(result.getContent()),
-				param.getPageNum(), param.getPageSize(), result.getTotalElements());
+		PageResult<AccountChangeLogVO> pageResult = new PageResult<>(
+				ConvertVoWithUserAccount.convertAccountChangeLog(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 

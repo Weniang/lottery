@@ -34,6 +34,8 @@ import me.zohar.lottery.common.vo.PageResult;
 import me.zohar.lottery.constants.Constant;
 import me.zohar.lottery.mastercontrol.domain.RechargeSetting;
 import me.zohar.lottery.mastercontrol.repo.RechargeSettingRepo;
+import me.zohar.lottery.rechargewithdraw.convert.ConvertPoWithRechargeWithdraw;
+import me.zohar.lottery.rechargewithdraw.convert.ConvertVoWithRechargeWithdraw;
 import me.zohar.lottery.rechargewithdraw.domain.RechargeOrder;
 import me.zohar.lottery.rechargewithdraw.param.LowerLevelRechargeOrderQueryCondParam;
 import me.zohar.lottery.rechargewithdraw.param.MuspayCallbackParam;
@@ -190,12 +192,12 @@ public class RechargeService {
 			orderEffectiveDuration = rechargeSetting.getOrderEffectiveDuration();
 		}
 
-		RechargeOrder rechargeOrder = param.convertToPo(orderEffectiveDuration);
+		RechargeOrder rechargeOrder = ConvertPoWithRechargeWithdraw.convertToPo(param,orderEffectiveDuration);
 		String payUrl = Muspay.sendRequest(rechargeOrder.getOrderNo(), rechargeOrder.getRechargeAmount(),
 				rechargeOrder.getRechargeWayCode());
 		rechargeOrder.setPayUrl(payUrl);
 		rechargeOrderRepo.save(rechargeOrder);
-		return RechargeOrderVO.convertFor(rechargeOrder);
+		return ConvertVoWithRechargeWithdraw.convertRechargeOrder(rechargeOrder);
 	}
 
 	@Transactional(readOnly = true)
@@ -230,7 +232,7 @@ public class RechargeService {
 		};
 		Page<RechargeOrder> result = rechargeOrderRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("submitTime"))));
-		PageResult<RechargeOrderVO> pageResult = new PageResult<>(RechargeOrderVO.convertFor(result.getContent()),
+		PageResult<RechargeOrderVO> pageResult = new PageResult<>(ConvertVoWithRechargeWithdraw.convertRechargeOrder(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
@@ -295,7 +297,7 @@ public class RechargeService {
 		};
 		Page<RechargeOrder> result = rechargeOrderRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("submitTime"))));
-		PageResult<RechargeOrderVO> pageResult = new PageResult<>(RechargeOrderVO.convertFor(result.getContent()),
+		PageResult<RechargeOrderVO> pageResult = new PageResult<>(ConvertVoWithRechargeWithdraw.convertRechargeOrder(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}

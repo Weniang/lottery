@@ -28,6 +28,8 @@ import me.zohar.lottery.common.exception.BizException;
 import me.zohar.lottery.common.valid.ParamValid;
 import me.zohar.lottery.common.vo.PageResult;
 import me.zohar.lottery.constants.Constant;
+import me.zohar.lottery.rechargewithdraw.convert.ConvertPoWithRechargeWithdraw;
+import me.zohar.lottery.rechargewithdraw.convert.ConvertVoWithRechargeWithdraw;
 import me.zohar.lottery.rechargewithdraw.domain.WithdrawRecord;
 import me.zohar.lottery.rechargewithdraw.param.LowerLevelWithdrawRecordQueryCondParam;
 import me.zohar.lottery.rechargewithdraw.param.StartWithdrawParam;
@@ -132,7 +134,7 @@ public class WithdrawService {
 		};
 		Page<WithdrawRecord> result = withdrawRecordRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("submitTime"))));
-		PageResult<WithdrawRecordVO> pageResult = new PageResult<>(WithdrawRecordVO.convertFor(result.getContent()),
+		PageResult<WithdrawRecordVO> pageResult = new PageResult<>(ConvertVoWithRechargeWithdraw.convertWithdrawRecord(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
@@ -152,7 +154,7 @@ public class WithdrawService {
 			throw new BizException(BizError.银行卡未绑定无法进行提现);
 		}
 
-		WithdrawRecord withdrawRecord = param.convertToPo();
+		WithdrawRecord withdrawRecord = ConvertPoWithRechargeWithdraw.convertToPo(param);
 		withdrawRecord.setBankInfo(userAccount);
 		withdrawRecordRepo.save(withdrawRecord);
 
@@ -207,7 +209,7 @@ public class WithdrawService {
 		};
 		Page<WithdrawRecord> result = withdrawRecordRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("submitTime"))));
-		PageResult<WithdrawRecordVO> pageResult = new PageResult<>(WithdrawRecordVO.convertFor(result.getContent()),
+		PageResult<WithdrawRecordVO> pageResult = new PageResult<>(ConvertVoWithRechargeWithdraw.convertWithdrawRecord(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}

@@ -27,6 +27,8 @@ import me.zohar.lottery.common.exception.BizError;
 import me.zohar.lottery.common.exception.BizException;
 import me.zohar.lottery.common.valid.ParamValid;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.dictconfig.convert.ConvertPoWithDictConfig;
+import me.zohar.lottery.dictconfig.convert.ConvertVoWithDictConfig;
 import me.zohar.lottery.dictconfig.domain.DictItem;
 import me.zohar.lottery.dictconfig.domain.DictType;
 import me.zohar.lottery.dictconfig.param.AddOrUpdateDictTypeParam;
@@ -62,7 +64,7 @@ public class DictService {
 
 		double orderNo = 1;
 		for (DictDataParam dictDataParam : param.getDictDatas()) {
-			DictItem dictItem = dictDataParam.convertToPo();
+			DictItem dictItem = ConvertPoWithDictConfig.convertToPo(dictDataParam);
 			dictItem.setDictTypeId(dictType.getId());
 			dictItem.setOrderNo(orderNo);
 			dictItemRepo.save(dictItem);
@@ -82,7 +84,7 @@ public class DictService {
 	@ParamValid
 	@Transactional(readOnly = true)
 	public DictTypeVO findDictTypeById(@NotBlank String id) {
-		return DictTypeVO.convertFor(dictTypeRepo.getOne(id));
+		return ConvertVoWithDictConfig.convertDictType(dictTypeRepo.getOne(id));
 	}
 
 	@ParamValid
@@ -90,7 +92,7 @@ public class DictService {
 	public void addOrUpdateDictType(AddOrUpdateDictTypeParam param) {
 		// 新增
 		if (StrUtil.isBlank(param.getId())) {
-			DictType dictType = param.convertToPo();
+			DictType dictType = ConvertPoWithDictConfig.convertToPo(param);
 			dictTypeRepo.save(dictType);
 		}
 		// 修改
@@ -122,7 +124,7 @@ public class DictService {
 		};
 		Page<DictType> result = dictTypeRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.asc("dictTypeCode"))));
-		PageResult<DictTypeVO> pageResult = new PageResult<>(DictTypeVO.convertFor(result.getContent()),
+		PageResult<DictTypeVO> pageResult = new PageResult<>(ConvertVoWithDictConfig.convertDictType(result.getContent()),
 				param.getPageNum(), param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
@@ -130,19 +132,19 @@ public class DictService {
 	@Cached(name = "dictItem_", key = "#dictTypeCode + '_' +  #dictItemCode", expire = 3600)
 	@Transactional(readOnly = true)
 	public DictItemVO findDictItemByDictTypeCodeAndDictItemCode(String dictTypeCode, String dictItemCode) {
-		return DictItemVO
-				.convertFor(dictItemRepo.findByDictTypeDictTypeCodeAndDictItemCode(dictTypeCode, dictItemCode));
+		return ConvertVoWithDictConfig
+				.convertDictItem(dictItemRepo.findByDictTypeDictTypeCodeAndDictItemCode(dictTypeCode, dictItemCode));
 	}
 
 	@Cached(name = "dictItems_", key = "#dictTypeCode", expire = 3600)
 	@Transactional(readOnly = true)
 	public List<DictItemVO> findDictItemByDictTypeCode(String dictTypeCode) {
-		return DictItemVO.convertFor(dictItemRepo.findByDictTypeDictTypeCodeOrderByOrderNo(dictTypeCode));
+		return ConvertVoWithDictConfig.convertDictItem(dictItemRepo.findByDictTypeDictTypeCodeOrderByOrderNo(dictTypeCode));
 	}
 
 	@Transactional(readOnly = true)
 	public List<DictItemVO> findDictItemByDictTypeId(String dictTypeId) {
-		return DictItemVO.convertFor(dictItemRepo.findByDictTypeIdOrderByOrderNo(dictTypeId));
+		return ConvertVoWithDictConfig.convertDictItem(dictItemRepo.findByDictTypeIdOrderByOrderNo(dictTypeId));
 	}
 
 }

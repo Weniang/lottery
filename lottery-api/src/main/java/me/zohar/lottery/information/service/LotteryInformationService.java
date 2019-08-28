@@ -23,6 +23,8 @@ import cn.hutool.core.util.StrUtil;
 import groovy.lang.GroovyShell;
 import me.zohar.lottery.common.valid.ParamValid;
 import me.zohar.lottery.common.vo.PageResult;
+import me.zohar.lottery.information.convert.ConvertPoWithInformation;
+import me.zohar.lottery.information.convert.ConvertVoWithInformation;
 import me.zohar.lottery.information.domain.InformationCrawler;
 import me.zohar.lottery.information.domain.LotteryInformation;
 import me.zohar.lottery.information.param.AddOrUpdateInformationCrawlerParam;
@@ -49,7 +51,7 @@ public class LotteryInformationService {
 	public void addOrUpdateInformation(AddOrUpdateInformationParam param) {
 		// 新增
 		if (StrUtil.isBlank(param.getId())) {
-			LotteryInformation lotteryInformation = param.convertToPo();
+			LotteryInformation lotteryInformation = ConvertPoWithInformation.convertToPo(param);
 			lotteryInformationRepo.save(lotteryInformation);
 		}
 		// 修改
@@ -66,11 +68,12 @@ public class LotteryInformationService {
 	}
 
 	public LotteryInformationVO findInformationById(String id) {
-		return LotteryInformationVO.convertFor(lotteryInformationRepo.getOne(id));
+		return ConvertVoWithInformation.convertLotteryInformation(lotteryInformationRepo.getOne(id));
 	}
 
 	public List<LotteryInformationVO> findTop13Information() {
-		return LotteryInformationVO.convertFor(lotteryInformationRepo.findTop13ByOrderByPublishTimeDesc());
+		return ConvertVoWithInformation
+				.convertLotteryInformation(lotteryInformationRepo.findTop13ByOrderByPublishTimeDesc());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -88,7 +91,7 @@ public class LotteryInformationService {
 				if (existLotteryInformation != null) {
 					continue;
 				}
-				LotteryInformation lotteryInformation = vo.convertToPo();
+				LotteryInformation lotteryInformation = ConvertVoWithInformation.convertToPo(vo);
 				lotteryInformationRepo.save(lotteryInformation);
 			}
 		}
@@ -101,7 +104,7 @@ public class LotteryInformationService {
 			if (existLotteryInformation != null) {
 				continue;
 			}
-			LotteryInformation lotteryInformation = param.convertToPo();
+			LotteryInformation lotteryInformation = ConvertPoWithInformation.convertToPo(param);
 			lotteryInformationRepo.save(lotteryInformation);
 		}
 	}
@@ -122,7 +125,7 @@ public class LotteryInformationService {
 
 	@Transactional(readOnly = true)
 	public LotteryInformationCrawlerVO findInformationCrawlerById(@NotBlank String id) {
-		return LotteryInformationCrawlerVO.convertFor(informationCrawlerRepo.getOne(id));
+		return ConvertVoWithInformation.convertLotteryInformationCrawler(informationCrawlerRepo.getOne(id));
 	}
 
 	@Transactional
@@ -135,7 +138,7 @@ public class LotteryInformationService {
 	public void addOrUpdateInformationCrawler(AddOrUpdateInformationCrawlerParam param) {
 		// 新增
 		if (StrUtil.isBlank(param.getId())) {
-			InformationCrawler informationCrawler = param.convertToPo();
+			InformationCrawler informationCrawler = ConvertPoWithInformation.convertToPo(param);
 			informationCrawlerRepo.save(informationCrawler);
 		}
 		// 修改
@@ -148,7 +151,7 @@ public class LotteryInformationService {
 
 	@Transactional(readOnly = true)
 	public List<LotteryInformationCrawlerVO> findAllInformationCrawler() {
-		return LotteryInformationCrawlerVO.convertFor(informationCrawlerRepo.findAll());
+		return ConvertVoWithInformation.convertLotteryInformationCrawler(informationCrawlerRepo.findAll());
 	}
 
 	@Transactional(readOnly = true)
@@ -174,8 +177,8 @@ public class LotteryInformationService {
 		Page<LotteryInformation> result = lotteryInformationRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("publishTime"))));
 		PageResult<LotteryInformationVO> pageResult = new PageResult<>(
-				LotteryInformationVO.convertFor(result.getContent()), param.getPageNum(), param.getPageSize(),
-				result.getTotalElements());
+				ConvertVoWithInformation.convertLotteryInformation(result.getContent()), param.getPageNum(),
+				param.getPageSize(), result.getTotalElements());
 		return pageResult;
 	}
 
