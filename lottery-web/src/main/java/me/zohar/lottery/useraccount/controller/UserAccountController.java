@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,7 +29,7 @@ public class UserAccountController {
 
 	@PostMapping("/bindBankInfo")
 	@ResponseBody
-	public Result bindBankInfo(BindBankInfoParam param) {
+	public Result bindBankInfo(@RequestBody BindBankInfoParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
@@ -46,7 +47,7 @@ public class UserAccountController {
 
 	@PostMapping("/modifyLoginPwd")
 	@ResponseBody
-	public Result modifyLoginPwd(ModifyLoginPwdParam param) {
+	public Result modifyLoginPwd(@RequestBody ModifyLoginPwdParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
@@ -56,7 +57,7 @@ public class UserAccountController {
 
 	@PostMapping("/modifyMoneyPwd")
 	@ResponseBody
-	public Result modifyMoneyPwd(ModifyMoneyPwdParam param) {
+	public Result modifyMoneyPwd(@RequestBody ModifyMoneyPwdParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
@@ -66,7 +67,7 @@ public class UserAccountController {
 
 	@PostMapping("/register")
 	@ResponseBody
-	public Result register(UserAccountRegisterParam param) {
+	public Result register(@RequestBody UserAccountRegisterParam param) {
 		userAccountService.register(param);
 		return Result.success();
 	}
@@ -83,18 +84,18 @@ public class UserAccountController {
 		return Result.success().setData(userAccountInfo);
 	}
 
-	@GetMapping("/findMyAccountChangeLogByPage")
+	@PostMapping("/findMyAccountChangeLogByPage")
 	@ResponseBody
-	public Result findMyAccountChangeLogByPage(AccountChangeLogQueryCondParam param) {
+	public Result findMyAccountChangeLogByPage(@RequestBody AccountChangeLogQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
 		return Result.success().setData(userAccountService.findAccountChangeLogByPage(param));
 	}
 
-	@GetMapping("/findLowerLevelAccountChangeLogByPage")
+	@PostMapping("/findLowerLevelAccountChangeLogByPage")
 	@ResponseBody
-	public Result findLowerLevelAccountChangeLogByPage(LowerLevelAccountChangeLogQueryCondParam param) {
+	public Result findLowerLevelAccountChangeLogByPage(@RequestBody LowerLevelAccountChangeLogQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());

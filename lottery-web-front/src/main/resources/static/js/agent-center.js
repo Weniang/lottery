@@ -151,13 +151,19 @@ var agentCenterVM = new Vue({
 			$('.lower-level-account-manage-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/agent/findLowerLevelAccountDetailsInfoByPage',
+				method : 'post',
+				url : globalPrefix + '/agent/findLowerLevelAccountDetailsInfoByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -394,13 +400,19 @@ var agentCenterVM = new Vue({
 			$('.betting-details-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/betting/findLowerLevelBettingOrderInfoByPage',
+				method : 'post',
+				url : globalPrefix + '/betting/findLowerLevelBettingOrderInfoByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -517,13 +529,19 @@ var agentCenterVM = new Vue({
 			$('.recharge-details-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/recharge/findLowerLevelRechargeOrderByPage',
+				method : 'post',
+				url : globalPrefix + '/recharge/findLowerLevelRechargeOrderByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -608,13 +626,19 @@ var agentCenterVM = new Vue({
 			$('.withdraw-details-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/withdraw/findLowerLevelWithdrawRecordByPage',
+				method : 'post',
+				url : globalPrefix + '/withdraw/findLowerLevelWithdrawRecordByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -696,13 +720,19 @@ var agentCenterVM = new Vue({
 			$('.profit-and-loss-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/agent/findAccountProfitAndLossByPage',
+				method : 'post',
+				url : globalPrefix + '/agent/findAccountProfitAndLossByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -816,13 +846,19 @@ var agentCenterVM = new Vue({
 			$('.account-change-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/userAccount/findLowerLevelAccountChangeLogByPage',
+				method : 'post',
+				url : globalPrefix + '/userAccount/findLowerLevelAccountChangeLogByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,

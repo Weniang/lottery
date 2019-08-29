@@ -36,9 +36,9 @@ public class TrackingNumberController {
 		return Result.success();
 	}
 
-	@GetMapping("/findMyTrackingNumberSituationByPage")
+	@PostMapping("/findMyTrackingNumberSituationByPage")
 	@ResponseBody
-	public Result findMyTrackingNumberSituationByPage(TrackingNumberSituationQueryCondParam param) {
+	public Result findMyTrackingNumberSituationByPage(@RequestBody TrackingNumberSituationQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
@@ -53,7 +53,7 @@ public class TrackingNumberController {
 		return Result.success()
 				.setData(trackingNumberService.findMyTrackingNumberOrderDetails(id, user.getUserAccountId()));
 	}
-	
+
 	@GetMapping("/cancelOrder")
 	@ResponseBody
 	public Result cancelOrder(String orderId) {

@@ -3,16 +3,23 @@
 <head>
 <meta charset="utf-8">
 <title>追号记录</title>
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
 <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
-<script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 <script src="https://cdn.bootcss.com/dayjs/1.7.8/dayjs.min.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.13.1/bootstrap-table.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.13.1/bootstrap-table.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.13.1/locale/bootstrap-table-zh-CN.min.js"></script>
+<link rel="stylesheet"
+	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.13.1/bootstrap-table.min.css">
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.13.1/bootstrap-table.min.js"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.13.1/locale/bootstrap-table-zh-CN.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 .betting-record-table .betting-record-order-no {
@@ -33,21 +40,27 @@
 		<div id="betting-record" v-cloak>
 			<form class="form-inline common-query-cond-form">
 				<div class="form-group common-query-cond">
-					<label>游戏:</label> <select class="form-control-sm" v-model="gameCode">
+					<label>游戏:</label> <select class="form-control-sm"
+						v-model="gameCode">
 						<option value="">全部游戏</option>
-						<option v-for="dictItem in gameDictItems" :value="dictItem.dictItemCode">{{dictItem.dictItemName}}</option>
+						<option v-for="dictItem in gameDictItems"
+							:value="dictItem.dictItemCode">{{dictItem.dictItemName}}</option>
 					</select>
 				</div>
 				<div class="form-group common-query-cond">
-					<label>时间:</label><input type="date" class="form-control-sm" v-model="startTime"><span>到</span><input type="date" class="form-control-sm" v-model="endTime">
+					<label>时间:</label><input type="date" class="form-control-sm"
+						v-model="startTime"><span>到</span><input type="date"
+						class="form-control-sm" v-model="endTime">
 				</div>
 				<div class="form-group common-query-cond">
 					<label>状态:</label> <select class="form-control-sm" v-model="state">
 						<option value="">全部</option>
-						<option v-for="dictItem in trackingNumberOrderStateDictItems" :value="dictItem.dictItemCode">{{dictItem.dictItemName}}</option>
+						<option v-for="dictItem in trackingNumberOrderStateDictItems"
+							:value="dictItem.dictItemCode">{{dictItem.dictItemName}}</option>
 					</select>
 				</div>
-				<button type="button" class="btn btn-danger btn-sm" v-on:click="refreshTable">搜索</button>
+				<button type="button" class="btn btn-danger btn-sm"
+					v-on:click="refreshTable">搜索</button>
 			</form>
 			<table class="common-table betting-record-table"></table>
 		</div>
@@ -73,7 +86,7 @@
 				this.initTable();
 			},
 			methods : {
-				
+
 				loadGameDictItem : function() {
 					var that = this;
 					that.$http.get('/dictconfig/findDictItemInCache', {
@@ -84,7 +97,7 @@
 						this.gameDictItems = res.body.data;
 					});
 				},
-				
+
 				loadTrackingNumberOrderStateDictItem : function() {
 					var that = this;
 					that.$http.get('/dictconfig/findDictItemInCache', {
@@ -101,13 +114,19 @@
 					$('.betting-record-table').bootstrapTable({
 						classes : 'table table-hover',
 						height : 540,
-						url : '/trackingNumber/findMyTrackingNumberSituationByPage',
+						method : 'post',
+						url : globalPrefix + '/trackingNumber/findMyTrackingNumberSituationByPage',
 						pagination : true,
 						sidePagination : 'server',
 						pageNumber : 1,
 						pageSize : 10,
 						pageList : [ 10, 25, 50, 100 ],
 						queryParamsType : '',
+						ajaxOptions : {
+							headers : {
+								'Authorization' : localStorage.getItem('jwtToken')
+							}
+						},
 						queryParams : function(params) {
 							var condParam = {
 								pageSize : params.pageSize,

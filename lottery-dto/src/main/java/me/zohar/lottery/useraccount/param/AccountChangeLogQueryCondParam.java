@@ -2,7 +2,7 @@ package me.zohar.lottery.useraccount.param;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,13 +20,13 @@ public class AccountChangeLogQueryCondParam extends PageParam {
 	/**
 	 * 开始时间
 	 */
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startTime;
 
 	/**
 	 * 结束时间
 	 */
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endTime;
 
 	/**

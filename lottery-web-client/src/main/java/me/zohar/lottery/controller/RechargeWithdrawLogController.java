@@ -2,17 +2,18 @@ package me.zohar.lottery.controller;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import me.zohar.lottery.FeignConfiguration;
 import me.zohar.lottery.common.vo.Result;
+import me.zohar.lottery.rechargewithdraw.param.RechargeWithdrawLogQueryCondParam;
 
 @RestController
 @FeignClient(name = "lottery-web", configuration = FeignConfiguration.class)
-public interface LoginController {
+public interface RechargeWithdrawLogController {
 
-	@PostMapping("/login")
-	Result login(@RequestParam("userName") String userName, @RequestParam("password") String password);
+	@PostMapping("/rechargeWithdrawLog/findMyRechargeWithdrawLogByPage")
+	Result login(@RequestBody RechargeWithdrawLogQueryCondParam param);
 
 }

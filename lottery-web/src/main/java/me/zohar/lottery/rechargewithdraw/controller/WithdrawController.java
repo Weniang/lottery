@@ -3,8 +3,8 @@ package me.zohar.lottery.rechargewithdraw.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,7 +23,7 @@ public class WithdrawController {
 
 	@PostMapping("/startWithdraw")
 	@ResponseBody
-	public Result startWithdraw(StartWithdrawParam param) {
+	public Result startWithdraw(@RequestBody StartWithdrawParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
@@ -31,9 +31,9 @@ public class WithdrawController {
 		return Result.success();
 	}
 
-	@GetMapping("/findLowerLevelWithdrawRecordByPage")
+	@PostMapping("/findLowerLevelWithdrawRecordByPage")
 	@ResponseBody
-	public Result findLowerLevelWithdrawRecordByPage(LowerLevelWithdrawRecordQueryCondParam param) {
+	public Result findLowerLevelWithdrawRecordByPage(@RequestBody LowerLevelWithdrawRecordQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());

@@ -42,7 +42,8 @@ public class BettingController {
 	public Result findMyOrLowerLevelBettingOrderDetails(String id) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return Result.success().setData(bettingService.findMyOrLowerLevelBettingOrderDetails(id, user.getUserAccountId()));
+		return Result.success()
+				.setData(bettingService.findMyOrLowerLevelBettingOrderDetails(id, user.getUserAccountId()));
 	}
 
 	/**
@@ -51,9 +52,9 @@ public class BettingController {
 	 * @param param
 	 * @return
 	 */
-	@GetMapping("/findMyBettingOrderInfoByPage")
+	@PostMapping("/findMyBettingOrderInfoByPage")
 	@ResponseBody
-	public Result findMyBettingOrderInfoByPage(BettingOrderQueryCondParam param) {
+	public Result findMyBettingOrderInfoByPage(@RequestBody BettingOrderQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
@@ -101,9 +102,9 @@ public class BettingController {
 		return Result.success();
 	}
 
-	@GetMapping("/findLowerLevelBettingOrderInfoByPage")
+	@PostMapping("/findLowerLevelBettingOrderInfoByPage")
 	@ResponseBody
-	public Result findLowerLevelBettingOrderInfoByPage(LowerLevelBettingOrderQueryCondParam param) {
+	public Result findLowerLevelBettingOrderInfoByPage(@RequestBody LowerLevelBettingOrderQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());

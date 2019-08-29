@@ -58,18 +58,18 @@ public class AgentController {
 		return Result.success().setData(agentService.getInviteCodeDetailsInfoById(inviteCodeId));
 	}
 
-	@GetMapping("/findLowerLevelAccountDetailsInfoByPage")
+	@PostMapping("/findLowerLevelAccountDetailsInfoByPage")
 	@ResponseBody
-	public Result findLowerLevelAccountDetailsInfoByPage(LowerLevelAccountQueryCondParam param) {
+	public Result findLowerLevelAccountDetailsInfoByPage(@RequestBody LowerLevelAccountQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());
 		return Result.success().setData(userAccountService.findLowerLevelAccountDetailsInfoByPage(param));
 	}
 
-	@GetMapping("/findAccountProfitAndLossByPage")
+	@PostMapping("/findAccountProfitAndLossByPage")
 	@ResponseBody
-	public Result findAccountProfitAndLossByPage(AccountProfitAndLossQueryCondParam param) {
+	public Result findAccountProfitAndLossByPage(@RequestBody AccountProfitAndLossQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());

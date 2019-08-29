@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+<script src="https://libs.cdnjs.net/layer/2.3/layer.js"></script>
 <style>
 @charset "UTF-8";
 
@@ -154,10 +154,10 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+		var globalPrefix = 'http://localhost:8089';
 		Vue.http.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 		Vue.http.interceptors.push(function(request) {
-			request.url = 'http://localhost:8088' + request.url;
-			console.log(request);
+			request.url = globalPrefix + request.url;
 			return function(response) {
 				if (response.body.code != 200) {
 					response.ok = false;
