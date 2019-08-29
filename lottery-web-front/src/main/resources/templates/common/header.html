@@ -213,7 +213,9 @@
 					window.location.href = url;
 				},
 				logout : function() {
-					this.$http.post('/logout').then(function(res) {
+					localStorage.removeItem('jwtToken');
+					window.location.href = '/';
+					/* this.$http.post('/logout').then(function(res) {
 						layer.open({
 							title : '提示',
 							icon : '1',
@@ -225,7 +227,7 @@
 								window.location.href = '/';
 							}
 						});
-					});
+					}); */
 				},
 				login : function() {
 					var that = this;

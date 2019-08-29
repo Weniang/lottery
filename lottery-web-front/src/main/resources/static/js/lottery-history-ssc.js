@@ -234,11 +234,9 @@ var lotteryHistorySscVM = new Vue({
 
 		statisticalDoubleSided : function() {
 			var that = this;
-			that.$http.get('/issue/findLotteryHistory', {
-				params : {
-					gameCode : that.gameCode,
-					lotteryDate : dayjs().format('YYYY-MM-DD')
-				}
+			that.$http.post('/issue/findLotteryHistory', {
+				gameCode : that.gameCode,
+				lotteryDate : dayjs().format('YYYY-MM-DD')
 			}).then(function(res) {
 				that.statisticalDoubleSidedInner(res.body.data);
 			});
@@ -359,11 +357,9 @@ var lotteryHistorySscVM = new Vue({
 				});
 				return;
 			}
-			that.$http.get('/issue/findLotteryHistory', {
-				params : {
-					gameCode : that.gameCode,
-					lotteryDate : that.lotteryDate
-				}
+			that.$http.post('/issue/findLotteryHistory', {
+				gameCode : that.gameCode,
+				lotteryDate : that.lotteryDate
 			}).then(function(res) {
 				that.issues = res.body.data;
 				that.statisticalTwinNumber();

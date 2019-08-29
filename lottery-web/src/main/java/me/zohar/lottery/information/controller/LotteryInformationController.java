@@ -3,6 +3,8 @@ package me.zohar.lottery.information.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,9 +31,9 @@ public class LotteryInformationController {
 		return Result.success().setData(lotteryInformationService.findTop13Information());
 	}
 
-	@GetMapping("/findLotteryInformationByPage")
+	@PostMapping("/findLotteryInformationByPage")
 	@ResponseBody
-	public Result findLotteryInformationByPage(LotteryInformationQueryCondParam param) {
+	public Result findLotteryInformationByPage(@RequestBody LotteryInformationQueryCondParam param) {
 		return Result.success().setData(lotteryInformationService.findLotteryInformationByPage(param));
 	}
 
