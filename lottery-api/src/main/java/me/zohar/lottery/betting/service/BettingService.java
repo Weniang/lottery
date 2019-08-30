@@ -200,7 +200,7 @@ public class BettingService {
 
 	@ParamValid
 	@Transactional
-	public String placeOrder(PlaceOrderParam placeOrderParam, String userAccountId) {
+	public String placeOrder(PlaceOrderParam placeOrderParam) {
 		Date now = new Date();
 		Issue currentIssue = issueRepo.findTopByGameCodeAndStartTimeLessThanEqualAndEndTimeGreaterThan(
 				placeOrderParam.getGameCode(), now, now);
@@ -229,7 +229,7 @@ public class BettingService {
 			}
 		}
 
-		UserAccount userAccount = userAccountRepo.getOne(userAccountId);
+		UserAccount userAccount = userAccountRepo.getOne(placeOrderParam.getUserAccountId());
 		long totalBettingCount = 0;
 		double totalBettingAmount = 0;
 		List<BettingRecord> bettingRecords = new ArrayList<>();
@@ -272,7 +272,7 @@ public class BettingService {
 		}
 
 		BettingOrder bettingOrder = ConvertPoWithBetting.convertToPo(placeOrderParam, bettingIssue.getId(),
-				totalBettingCount, totalBettingAmount, userAccountId);
+				totalBettingCount, totalBettingAmount, placeOrderParam.getUserAccountId());
 		bettingOrderRepo.save(bettingOrder);
 		for (BettingRecord bettingRecord : bettingRecords) {
 			bettingRecord.setBettingOrderId(bettingOrder.getId());

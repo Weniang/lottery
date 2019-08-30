@@ -23,6 +23,7 @@
 	<modules>
 		<module>lottery-dto</module>
 		<module>lottery-api</module>
+		<module>lottery-api-client</module>
 		<module>lottery-task</module>
 		<module>lottery-web</module>
 		<module>lottery-mobile</module>

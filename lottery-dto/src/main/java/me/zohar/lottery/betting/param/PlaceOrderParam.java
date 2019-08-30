@@ -19,6 +19,9 @@ import lombok.Data;
  */
 @Data
 public class PlaceOrderParam {
+	
+	@NotBlank
+	private String userAccountId;
 
 	/**
 	 * 游戏代码

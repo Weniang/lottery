@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +26,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import lombok.extern.slf4j.Slf4j;
+import me.zohar.lottery.common.exception.BizError;
+import me.zohar.lottery.common.exception.BizException;
 import me.zohar.lottery.common.utils.IdUtils;
 import me.zohar.lottery.common.utils.ThreadPoolUtils;
 import me.zohar.lottery.common.vo.PageResult;
@@ -54,10 +55,10 @@ public class LoginService {
 	public void login(String userName, String password) {
 		LoginAccountInfoVO loginAccountInfo = userAccountService.getLoginAccountInfo(userName);
 		if (loginAccountInfo == null) {
-			throw new AuthenticationServiceException("用户名或密码不正确");
+			throw new BizException(BizError.业务异常.getCode(), "用户名或密码不正确");
 		}
 		if (!new BCryptPasswordEncoder().matches(password, loginAccountInfo.getLoginPwd())) {
-			throw new AuthenticationServiceException(Constant.登录提示_用户名或密码不正确);
+			throw new BizException(BizError.业务异常.getCode(), Constant.登录提示_用户名或密码不正确);
 		}
 		userAccountService.updateLatelyLoginTime(loginAccountInfo.getId());
 	}
@@ -94,8 +95,9 @@ public class LoginService {
 		};
 		Page<LoginLog> result = loginLogRepo.findAll(spec,
 				PageRequest.of(param.getPageNum() - 1, param.getPageSize(), Sort.by(Sort.Order.desc("loginTime"))));
-		PageResult<LoginLogVO> pageResult = new PageResult<>(ConvertVoWithUserAccount.convertLoginLog(result.getContent()),
-				param.getPageNum(), param.getPageSize(), result.getTotalElements());
+		PageResult<LoginLogVO> pageResult = new PageResult<>(
+				ConvertVoWithUserAccount.convertLoginLog(result.getContent()), param.getPageNum(), param.getPageSize(),
+				result.getTotalElements());
 		return pageResult;
 	}
 

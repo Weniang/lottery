@@ -154,7 +154,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		var globalPrefix = 'http://localhost:8089';
+		var globalPrefix = 'http://localhost:9001';
 		Vue.http.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 		Vue.http.interceptors.push(function(request) {
 			request.url = globalPrefix + request.url;

@@ -60,18 +60,18 @@ public class BettingController {
 				.setData(bettingService.findTodayLatestThe5TimeBettingRecord(user.getUserAccountId(), gameCode));
 	}
 
-	/**
-	 * 下单
-	 * 
-	 * @return
-	 */
-	@PostMapping("/placeOrder")
-	@ResponseBody
-	public Result placeOrder(@RequestBody PlaceOrderParam placeOrderParam) {
-		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
-		bettingService.placeOrder(placeOrderParam, user.getUserAccountId());
-		return Result.success();
-	}
+//	/**
+//	 * 下单
+//	 * 
+//	 * @return
+//	 */
+//	@PostMapping("/placeOrder")
+//	@ResponseBody
+//	public Result placeOrder(@RequestBody PlaceOrderParam placeOrderParam) {
+//		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
+//				.getPrincipal();
+//		bettingService.placeOrder(placeOrderParam, user.getUserAccountId());
+//		return Result.success();
+//	}
 
 }

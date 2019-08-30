@@ -17,9 +17,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.hutool.core.util.StrUtil;
 import io.jsonwebtoken.ExpiredJwtException;
-import me.zohar.lottery.useraccount.service.UserAccountService;
+import me.zohar.lottery.api.UserAccountApi;
+import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.useraccount.vo.LoginAccountInfoVO;
 
 @Component
@@ -28,7 +31,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private UserAccountService userAccountService;
+	private UserAccountApi userAccountApi;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -53,7 +56,9 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserAccountDetails userAccountDetails;
 			try {
-				LoginAccountInfoVO loginAccountInfo = userAccountService.getLoginAccountInfo(username);
+				Result result = userAccountApi.getLoginAccountInfo(username);
+				LoginAccountInfoVO loginAccountInfo = JSON.parseObject(JSON.toJSONString(result.getData()),
+						LoginAccountInfoVO.class);
 				userAccountDetails = new UserAccountDetails(loginAccountInfo);
 			} catch (UsernameNotFoundException e) {
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());

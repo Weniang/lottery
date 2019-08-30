@@ -13,6 +13,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum BizError {
+	
+	业务异常("1000", "业务异常"),
 
 	参数异常("1000", "参数异常"),
 

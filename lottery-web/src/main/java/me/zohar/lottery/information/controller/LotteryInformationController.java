@@ -8,33 +8,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.LotteryInformationApi;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.information.param.LotteryInformationQueryCondParam;
-import me.zohar.lottery.information.service.LotteryInformationService;
 
 @Controller
 @RequestMapping("/lotteryInformation")
 public class LotteryInformationController {
 
 	@Autowired
-	private LotteryInformationService lotteryInformationService;
+	private LotteryInformationApi lotteryInformationApi;
 
 	@GetMapping("/findInformationById")
 	@ResponseBody
 	public Result findInformationById(String id) {
-		return Result.success().setData(lotteryInformationService.findInformationById(id));
+		return lotteryInformationApi.findInformationById(id);
 	}
 
 	@GetMapping("/findTop13Information")
 	@ResponseBody
 	public Result findTop13Information() {
-		return Result.success().setData(lotteryInformationService.findTop13Information());
+		return lotteryInformationApi.findTop13Information();
 	}
 
 	@PostMapping("/findLotteryInformationByPage")
 	@ResponseBody
 	public Result findLotteryInformationByPage(@RequestBody LotteryInformationQueryCondParam param) {
-		return Result.success().setData(lotteryInformationService.findLotteryInformationByPage(param));
+		return lotteryInformationApi.findLotteryInformationByPage(param);
 	}
 
 }

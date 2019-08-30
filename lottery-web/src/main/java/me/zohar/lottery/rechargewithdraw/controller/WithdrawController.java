@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.WithdrawApi;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.security.UserAccountDetails;
 import me.zohar.lottery.rechargewithdraw.param.LowerLevelWithdrawRecordQueryCondParam;
 import me.zohar.lottery.rechargewithdraw.param.StartWithdrawParam;
-import me.zohar.lottery.rechargewithdraw.service.WithdrawService;
 
 @Controller
 @RequestMapping("/withdraw")
 public class WithdrawController {
 
 	@Autowired
-	private WithdrawService withdrawService;
+	private WithdrawApi withdrawApi;
 
 	@PostMapping("/startWithdraw")
 	@ResponseBody
@@ -27,8 +27,7 @@ public class WithdrawController {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
-		withdrawService.startWithdraw(param);
-		return Result.success();
+		return withdrawApi.startWithdraw(param);
 	}
 
 	@PostMapping("/findLowerLevelWithdrawRecordByPage")
@@ -37,7 +36,7 @@ public class WithdrawController {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());
-		return Result.success().setData(withdrawService.findLowerLevelWithdrawRecordByPage(param));
+		return withdrawApi.findLowerLevelWithdrawRecordByPage(param);
 	}
 
 }

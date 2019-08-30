@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.TrackingNumberApi;
 import me.zohar.lottery.betting.param.StartTrackingNumberParam;
 import me.zohar.lottery.betting.param.TrackingNumberSituationQueryCondParam;
-import me.zohar.lottery.betting.service.TrackingNumberService;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.security.UserAccountDetails;
 
@@ -20,7 +20,7 @@ import me.zohar.lottery.config.security.UserAccountDetails;
 public class TrackingNumberController {
 
 	@Autowired
-	private TrackingNumberService trackingNumberService;
+	private TrackingNumberApi trackingNumberApi;
 
 	/**
 	 * 发起追号
@@ -32,8 +32,7 @@ public class TrackingNumberController {
 	public Result startTrackingNumber(@RequestBody StartTrackingNumberParam startTrackingNumberParam) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		trackingNumberService.startTrackingNumber(startTrackingNumberParam, user.getUserAccountId());
-		return Result.success();
+		return trackingNumberApi.startTrackingNumber(startTrackingNumberParam);
 	}
 
 	@PostMapping("/findMyTrackingNumberSituationByPage")
@@ -42,7 +41,7 @@ public class TrackingNumberController {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setUserAccountId(user.getUserAccountId());
-		return Result.success().setData(trackingNumberService.findMyTrackingNumberSituationByPage(param));
+		return trackingNumberApi.findMyTrackingNumberSituationByPage(param);
 	}
 
 	@GetMapping("/findMyTrackingNumberOrderDetails")
@@ -50,8 +49,7 @@ public class TrackingNumberController {
 	public Result findMyTrackingNumberOrderDetails(String id) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return Result.success()
-				.setData(trackingNumberService.findMyTrackingNumberOrderDetails(id, user.getUserAccountId()));
+		return trackingNumberApi.findMyTrackingNumberOrderDetails(id);
 	}
 
 	@GetMapping("/cancelOrder")
@@ -59,8 +57,7 @@ public class TrackingNumberController {
 	public Result cancelOrder(String orderId) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		trackingNumberService.cancelOrder(orderId, user.getUserAccountId());
-		return Result.success();
+		return trackingNumberApi.cancelOrder(orderId);
 	}
 
 }

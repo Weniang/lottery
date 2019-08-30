@@ -74,7 +74,7 @@ public class TrackingNumberService {
 
 	@ParamValid
 	@Transactional
-	public void startTrackingNumber(StartTrackingNumberParam startTrackingNumberParam, String userAccountId) {
+	public void startTrackingNumber(StartTrackingNumberParam startTrackingNumberParam) {
 		long totalBettingCount = 0;
 		double totalBettingAmount = 0;
 		for (BettingRecordParam bettingRecordParam : startTrackingNumberParam.getBettingRecords()) {
@@ -84,7 +84,7 @@ public class TrackingNumberService {
 			totalBettingAmount += startTrackingNumberParam.getBaseAmount() * planParam.getMultiple()
 					* totalBettingCount;
 		}
-		UserAccount userAccount = userAccountRepo.getOne(userAccountId);
+		UserAccount userAccount = userAccountRepo.getOne(startTrackingNumberParam.getUserAccountId());
 		double balance = NumberUtil.round(userAccount.getBalance() - totalBettingAmount, 4).doubleValue();
 		if (userAccount.getBalance() <= 0 || balance < 0) {
 			throw new BizException(BizError.余额不足);
@@ -93,6 +93,7 @@ public class TrackingNumberService {
 		// 下单
 		for (TrackingNumberPlanParam planParam : startTrackingNumberParam.getPlans()) {
 			PlaceOrderParam placeOrderParam = new PlaceOrderParam();
+			placeOrderParam.setUserAccountId(startTrackingNumberParam.getUserAccountId());
 			placeOrderParam.setGameCode(startTrackingNumberParam.getGameCode());
 			placeOrderParam.setIssueNum(planParam.getIssueNum());
 			placeOrderParam.setBaseAmount(startTrackingNumberParam.getBaseAmount());
@@ -100,12 +101,13 @@ public class TrackingNumberService {
 			placeOrderParam.setTrackingNumberFlag(true);
 			placeOrderParam.setRebate(startTrackingNumberParam.getRebate());
 			placeOrderParam.setBettingRecords(startTrackingNumberParam.getBettingRecords());
-			String bettingOrderId = bettingService.placeOrder(placeOrderParam, userAccountId);
+			String bettingOrderId = bettingService.placeOrder(placeOrderParam);
 			planParam.setBettingOrderId(bettingOrderId);
 		}
 		// 保存追号订单
 		TrackingNumberOrder trackingNumberOrder = ConvertPoWithBetting.convertToPo(startTrackingNumberParam,
-				startTrackingNumberParam.getPlans().get(0).getIssueNum(), totalBettingAmount, userAccountId);
+				startTrackingNumberParam.getPlans().get(0).getIssueNum(), totalBettingAmount,
+				startTrackingNumberParam.getUserAccountId());
 		trackingNumberOrderRepo.save(trackingNumberOrder);
 		// 保存追号计划
 		for (TrackingNumberPlanParam planParam : startTrackingNumberParam.getPlans()) {
