@@ -22,9 +22,11 @@ public interface TrackingNumberApi {
 			@RequestBody TrackingNumberSituationQueryCondParam startTrackingNumberParam);
 
 	@GetMapping("/trackingNumber/findMyTrackingNumberOrderDetails")
-	Result findMyTrackingNumberOrderDetails(@RequestParam(value = "id") String id);
+	Result findMyTrackingNumberOrderDetails(@RequestParam(value = "id") String id,
+			@RequestParam(value = "userAccountId") String userAccountId);
 
 	@GetMapping("/trackingNumber/cancelOrder")
-	Result cancelOrder(@RequestParam(value = "orderId") String orderId);
+	Result cancelOrder(@RequestParam(value = "orderId") String orderId,
+			@RequestParam(value = "userAccountId") String userAccountId);
 
 }

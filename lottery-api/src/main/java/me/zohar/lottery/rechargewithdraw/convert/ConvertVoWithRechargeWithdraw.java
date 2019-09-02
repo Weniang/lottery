@@ -63,6 +63,8 @@ public class ConvertVoWithRechargeWithdraw {
 		vo.setOrderTypeName(DictHolder.getDictItemName("rechargeWithdrawLogOrderType", vo.getOrderType()));
 		if (Constant.充提日志订单类型_充值.equals(vo.getOrderType())) {
 			vo.setOrderStateName(DictHolder.getDictItemName("rechargeOrderState", vo.getOrderState()));
+		} else {
+			vo.setOrderStateName(DictHolder.getDictItemName("withdrawRecordState", vo.getOrderState()));
 		}
 		return vo;
 	}

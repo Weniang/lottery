@@ -1,7 +1,5 @@
 package me.zohar.lottery.betting.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.zohar.lottery.api.BettingApi;
+import me.zohar.lottery.betting.param.BatchCancelOrderParam;
 import me.zohar.lottery.betting.param.BettingOrderQueryCondParam;
 import me.zohar.lottery.betting.param.LowerLevelBettingOrderQueryCondParam;
 import me.zohar.lottery.betting.param.PlaceOrderParam;
@@ -42,7 +41,7 @@ public class BettingController {
 	public Result findMyOrLowerLevelBettingOrderDetails(String id) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return bettingApi.findMyOrLowerLevelBettingOrderDetails(id);
+		return bettingApi.findMyOrLowerLevelBettingOrderDetails(id, user.getUserAccountId());
 	}
 
 	/**
@@ -65,7 +64,7 @@ public class BettingController {
 	public Result findTodayLatestThe5TimeBettingRecord(String gameCode) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return bettingApi.findTodayLatestThe5TimeBettingRecord(gameCode);
+		return bettingApi.findTodayLatestThe5TimeBettingRecord(gameCode, user.getUserAccountId());
 	}
 
 	/**
@@ -75,10 +74,11 @@ public class BettingController {
 	 */
 	@PostMapping("/placeOrder")
 	@ResponseBody
-	public Result placeOrder(@RequestBody PlaceOrderParam placeOrderParam) {
+	public Result placeOrder(@RequestBody PlaceOrderParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return bettingApi.placeOrder(placeOrderParam);
+		param.setUserAccountId(user.getUserAccountId());
+		return bettingApi.placeOrder(param);
 	}
 
 	@GetMapping("/cancelOrder")
@@ -86,15 +86,16 @@ public class BettingController {
 	public Result cancelOrder(String orderId) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return bettingApi.cancelOrder(orderId);
+		return bettingApi.cancelOrder(orderId, user.getUserAccountId());
 	}
 
 	@PostMapping("/batchCancelOrder")
 	@ResponseBody
-	public Result batchCancelOrder(@RequestBody List<String> orderIds) {
+	public Result batchCancelOrder(@RequestBody BatchCancelOrderParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return bettingApi.batchCancelOrder(orderIds);
+		param.setUserAccountId(user.getUserAccountId());
+		return bettingApi.batchCancelOrder(param);
 	}
 
 	@PostMapping("/findLowerLevelBettingOrderInfoByPage")

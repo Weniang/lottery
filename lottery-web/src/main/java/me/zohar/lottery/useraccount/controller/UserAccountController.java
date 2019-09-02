@@ -18,7 +18,6 @@ import me.zohar.lottery.useraccount.param.LowerLevelAccountChangeLogQueryCondPar
 import me.zohar.lottery.useraccount.param.ModifyLoginPwdParam;
 import me.zohar.lottery.useraccount.param.ModifyMoneyPwdParam;
 import me.zohar.lottery.useraccount.param.UserAccountRegisterParam;
-import me.zohar.lottery.useraccount.vo.UserAccountInfoVO;
 
 @Controller
 @RequestMapping("/userAccount")
@@ -79,14 +78,14 @@ public class UserAccountController {
 		return userAccountApi.getUserAccountInfo(user.getUserAccountId());
 	}
 
-//	@PostMapping("/findMyAccountChangeLogByPage")
-//	@ResponseBody
-//	public Result findMyAccountChangeLogByPage(@RequestBody AccountChangeLogQueryCondParam param) {
-//		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
-//				.getPrincipal();
-//		param.setUserAccountId(user.getUserAccountId());
-//		return Result.success().setData(userAccountApi.findAccountChangeLogByPage(param));
-//	}
+	@PostMapping("/findMyAccountChangeLogByPage")
+	@ResponseBody
+	public Result findMyAccountChangeLogByPage(@RequestBody AccountChangeLogQueryCondParam param) {
+		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		param.setUserAccountId(user.getUserAccountId());
+		return userAccountApi.findMyAccountChangeLogByPage(param);
+	}
 
 	@PostMapping("/findLowerLevelAccountChangeLogByPage")
 	@ResponseBody

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import me.zohar.lottery.agent.param.AgentOpenAnAccountParam;
 import me.zohar.lottery.agent.param.GenerateInviteCodeParam;
 import me.zohar.lottery.api.AgentApi;
-import me.zohar.lottery.api.UserAccountApi;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.security.UserAccountDetails;
+import me.zohar.lottery.statisticalanalysis.param.AccountProfitAndLossQueryCondParam;
 import me.zohar.lottery.useraccount.param.LowerLevelAccountQueryCondParam;
 
 @Controller
@@ -23,12 +23,6 @@ public class AgentController {
 
 	@Autowired
 	private AgentApi agentApi;
-
-	@Autowired
-	private UserAccountApi userAccountApi;
-	//
-	// @Autowired
-	// private StatisticalAnalysisApi statisticalAnalysisService;
 
 	@GetMapping("/findAllRebateAndOdds")
 	@ResponseBody
@@ -54,25 +48,22 @@ public class AgentController {
 		return agentApi.generateInviteCodeAndGetInviteRegisterLink(param);
 	}
 
-//	@PostMapping("/findLowerLevelAccountDetailsInfoByPage")
-//	@ResponseBody
-//	public Result findLowerLevelAccountDetailsInfoByPage(@RequestBody LowerLevelAccountQueryCondParam param) {
-//		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
-//				.getPrincipal();
-//		param.setCurrentAccountId(user.getUserAccountId());
-//		return Result.success().setData(userAccountApi.findLowerLevelAccountDetailsInfoByPage(param));
-//	}
+	@PostMapping("/findLowerLevelAccountDetailsInfoByPage")
+	@ResponseBody
+	public Result findLowerLevelAccountDetailsInfoByPage(@RequestBody LowerLevelAccountQueryCondParam param) {
+		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		param.setCurrentAccountId(user.getUserAccountId());
+		return agentApi.findLowerLevelAccountDetailsInfoByPage(param);
+	}
 
-	// @PostMapping("/findAccountProfitAndLossByPage")
-	// @ResponseBody
-	// public Result findAccountProfitAndLossByPage(@RequestBody
-	// AccountProfitAndLossQueryCondParam param) {
-	// UserAccountDetails user = (UserAccountDetails)
-	// SecurityContextHolder.getContext().getAuthentication()
-	// .getPrincipal();
-	// param.setCurrentAccountId(user.getUserAccountId());
-	// return
-	// Result.success().setData(statisticalAnalysisService.findAccountProfitAndLossByPage(param));
-	// }
+	@PostMapping("/findAccountProfitAndLossByPage")
+	@ResponseBody
+	public Result findAccountProfitAndLossByPage(@RequestBody AccountProfitAndLossQueryCondParam param) {
+		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		param.setCurrentAccountId(user.getUserAccountId());
+		return agentApi.findAccountProfitAndLossByPage(param);
+	}
 
 }

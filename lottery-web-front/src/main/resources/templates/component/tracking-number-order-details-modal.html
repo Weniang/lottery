@@ -29,7 +29,9 @@
 								<h5 class="modal-title">
 									追号订单详情<span>订单号:{{bettingOrderDetails.orderNo}}</span>
 								</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="showBettingOrderDetailsFlag = false">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close"
+									v-on:click="showBettingOrderDetailsFlag = false">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -48,7 +50,8 @@
 										<label>投注模式:</label> <span>{{bettingOrderDetails.baseAmount}}元</span>
 									</div>
 									<div class="col-sm-6 form-details-item">
-										<label>中奖即停:</label> <span>{{bettingOrderDetails.winToStop ? '是' : '否'}}</span>
+										<label>中奖即停:</label> <span>{{bettingOrderDetails.winToStop
+											? '是' : '否'}}</span>
 									</div>
 								</div>
 								<div class="row">
@@ -77,7 +80,8 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="trackingNumberContent in bettingOrderDetails.trackingNumberContents">
+										<tr
+											v-for="trackingNumberContent in bettingOrderDetails.trackingNumberContents">
 											<td>{{trackingNumberContent.gamePlayName}}</td>
 											<td class="form-details-item-highlight">{{trackingNumberContent.selectedNo}}</td>
 											<td>{{trackingNumberContent.bettingCount}}</td>
@@ -88,8 +92,12 @@
 								<table class="table table-sm form-details-table">
 									<thead>
 										<tr>
-											<th><div class="custom-control custom-checkbox" v-show="bettingOrderDetails.uncompletedIssueCount > 0">
-													<input type="checkbox" class="custom-control-input" id="checkAllPlan" v-model="checkAllFlag" v-on:change="switchCheckAll"> <label class="custom-control-label" for="checkAllPlan"></label>
+											<th><div class="custom-control custom-checkbox"
+													v-show="bettingOrderDetails.uncompletedIssueCount > 0">
+													<input type="checkbox" class="custom-control-input"
+														id="checkAllPlan" v-model="checkAllFlag"
+														v-on:change="switchCheckAll"> <label
+														class="custom-control-label" for="checkAllPlan"></label>
 												</div></th>
 											<th>追号期号</th>
 											<th>开奖号码</th>
@@ -100,10 +108,17 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(trackingNumberPlan, index) in bettingOrderDetails.trackingNumberPlans">
+										<tr
+											v-for="(trackingNumberPlan, index) in bettingOrderDetails.trackingNumberPlans">
 											<td>
-												<div class="custom-control custom-checkbox" v-show="trackingNumberPlan.cancelOrderFlag">
-													<input type="checkbox" class="custom-control-input" :id="'trackingNumberCheckbox_' + trackingNumberPlan.id" v-model="checkCancelOrderFlags[index]" v-on:change="switchCheck"> <label class="custom-control-label" :for="'trackingNumberCheckbox_' + trackingNumberPlan.id"></label>
+												<div class="custom-control custom-checkbox"
+													v-show="trackingNumberPlan.cancelOrderFlag">
+													<input type="checkbox" class="custom-control-input"
+														:id="'trackingNumberCheckbox_' + trackingNumberPlan.id"
+														v-model="checkCancelOrderFlags[index]"
+														v-on:change="switchCheck"> <label
+														class="custom-control-label"
+														:for="'trackingNumberCheckbox_' + trackingNumberPlan.id"></label>
 												</div>
 											</td>
 											<td>{{trackingNumberPlan.issueNum}}</td>
@@ -117,8 +132,11 @@
 								</table>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger btn-sm" v-show="bettingOrderDetails.uncompletedIssueCount > 0" v-on:click="cancelOrder">撤单</button>
-								<button type="button" class="btn btn-sm" v-on:click="showBettingOrderDetailsFlag = false">返回</button>
+								<button type="button" class="btn btn-danger btn-sm"
+									v-show="bettingOrderDetails.uncompletedIssueCount > 0"
+									v-on:click="cancelOrder">撤单</button>
+								<button type="button" class="btn btn-sm"
+									v-on:click="showBettingOrderDetailsFlag = false">返回</button>
 							</div>
 						</div>
 					</div>
@@ -179,7 +197,9 @@
 						title : '提示'
 					}, function(index) {
 						layer.close(index);
-						that.$http.post('/betting/batchCancelOrder', bettingOrderIds).then(function(res) {
+						that.$http.post('/betting/batchCancelOrder', {
+							orderIds : bettingOrderIds
+						}).then(function(res) {
 							layer.alert('撤单成功!', {
 								icon : 1,
 								time : 3000,

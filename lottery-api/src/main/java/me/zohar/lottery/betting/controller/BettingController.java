@@ -1,7 +1,5 @@
 package me.zohar.lottery.betting.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.betting.param.BatchCancelOrderParam;
 import me.zohar.lottery.betting.param.BettingOrderQueryCondParam;
 import me.zohar.lottery.betting.param.LowerLevelBettingOrderQueryCondParam;
 import me.zohar.lottery.betting.param.PlaceOrderParam;
@@ -38,8 +37,7 @@ public class BettingController {
 	@GetMapping("/findMyOrLowerLevelBettingOrderDetails")
 	@ResponseBody
 	public Result findMyOrLowerLevelBettingOrderDetails(String id, String userAccountId) {
-		return Result.success()
-				.setData(bettingService.findMyOrLowerLevelBettingOrderDetails(id, userAccountId));
+		return Result.success().setData(bettingService.findMyOrLowerLevelBettingOrderDetails(id, userAccountId));
 	}
 
 	/**
@@ -81,8 +79,8 @@ public class BettingController {
 
 	@PostMapping("/batchCancelOrder")
 	@ResponseBody
-	public Result batchCancelOrder(@RequestBody List<String> orderIds, String userAccountId) {
-		bettingService.batchCancelOrder(orderIds, userAccountId);
+	public Result batchCancelOrder(@RequestBody BatchCancelOrderParam param) {
+		bettingService.batchCancelOrder(param.getOrderIds(), param.getUserAccountId());
 		return Result.success();
 	}
 

@@ -29,10 +29,11 @@ public class TrackingNumberController {
 	 */
 	@PostMapping("/startTrackingNumber")
 	@ResponseBody
-	public Result startTrackingNumber(@RequestBody StartTrackingNumberParam startTrackingNumberParam) {
+	public Result startTrackingNumber(@RequestBody StartTrackingNumberParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return trackingNumberApi.startTrackingNumber(startTrackingNumberParam);
+		param.setUserAccountId(user.getUserAccountId());
+		return trackingNumberApi.startTrackingNumber(param);
 	}
 
 	@PostMapping("/findMyTrackingNumberSituationByPage")
@@ -49,7 +50,7 @@ public class TrackingNumberController {
 	public Result findMyTrackingNumberOrderDetails(String id) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return trackingNumberApi.findMyTrackingNumberOrderDetails(id);
+		return trackingNumberApi.findMyTrackingNumberOrderDetails(id, user.getUserAccountId());
 	}
 
 	@GetMapping("/cancelOrder")
@@ -57,7 +58,7 @@ public class TrackingNumberController {
 	public Result cancelOrder(String orderId) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		return trackingNumberApi.cancelOrder(orderId);
+		return trackingNumberApi.cancelOrder(orderId, user.getUserAccountId());
 	}
 
 }
