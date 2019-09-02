@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.zohar.lottery.agent.param.AddOrUpdateRebateAndOddsParam;
-import me.zohar.lottery.agent.service.AgentService;
+import me.zohar.lottery.api.AgentApi;
 import me.zohar.lottery.common.param.PageParam;
 import me.zohar.lottery.common.vo.Result;
 
@@ -20,44 +20,41 @@ import me.zohar.lottery.common.vo.Result;
 public class AgentController {
 
 	@Autowired
-	private AgentService agentService;
+	private AgentApi agentApi;
 
 	@GetMapping("/findAllRebateAndOdds")
 	@ResponseBody
 	public Result findAllRebateAndOdds() {
-		return Result.success().setData(agentService.findAllRebateAndOdds());
+		return agentApi.findAllRebateAndOdds();
 	}
 
-	@GetMapping("/findRebateAndOddsSituationByPage")
+	@PostMapping("/findRebateAndOddsSituationByPage")
 	@ResponseBody
-	public Result findRebateAndOddsSituationByPage(PageParam param) {
-		return Result.success().setData(agentService.findRebateAndOddsSituationByPage(param));
+	public Result findRebateAndOddsSituationByPage(@RequestBody PageParam param) {
+		return agentApi.findRebateAndOddsSituationByPage(param);
 	}
 
 	@PostMapping("/resetRebateAndOdds")
 	@ResponseBody
 	public Result resetRebateAndOdds(@RequestBody List<AddOrUpdateRebateAndOddsParam> params) {
-		agentService.resetRebateAndOdds(params);
-		return Result.success();
+		return agentApi.resetRebateAndOdds(params);
 	}
 
 	@GetMapping("/findRebateAndOdds")
 	@ResponseBody
 	public Result findRebateAndOdds(Double rebate, Double odds) {
-		return Result.success().setData(agentService.findRebateAndOdds(rebate, odds));
+		return agentApi.findRebateAndOdds(rebate, odds);
 	}
 
 	@PostMapping("/addOrUpdateRebateAndOdds")
 	@ResponseBody
 	public Result addOrUpdateRebateAndOdds(@RequestBody AddOrUpdateRebateAndOddsParam param) {
-		agentService.addOrUpdateRebateAndOdds(param);
-		return Result.success();
+		return agentApi.addOrUpdateRebateAndOdds(param);
 	}
 
 	@GetMapping("/delRebateAndOdds")
 	@ResponseBody
 	public Result delRebateAndOdds(Double rebate, Double odds) {
-		agentService.delRebateAndOdds(rebate, odds);
-		return Result.success();
+		return agentApi.delRebateAndOdds(rebate, odds);
 	}
 }
