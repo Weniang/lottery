@@ -9,16 +9,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.FeignConfiguration;
 import me.zohar.lottery.useraccount.param.AccountChangeLogQueryCondParam;
+import me.zohar.lottery.useraccount.param.AddUserAccountParam;
 import me.zohar.lottery.useraccount.param.BindBankInfoParam;
+import me.zohar.lottery.useraccount.param.LoginLogQueryCondParam;
 import me.zohar.lottery.useraccount.param.LowerLevelAccountChangeLogQueryCondParam;
 import me.zohar.lottery.useraccount.param.ModifyLoginPwdParam;
 import me.zohar.lottery.useraccount.param.ModifyMoneyPwdParam;
+import me.zohar.lottery.useraccount.param.UserAccountEditParam;
+import me.zohar.lottery.useraccount.param.UserAccountQueryCondParam;
 import me.zohar.lottery.useraccount.param.UserAccountRegisterParam;
 
 @FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
 public interface UserAccountApi {
-	
-	
+
+	@PostMapping("/userAccount/findLoginLogByPage")
+	Result findLoginLogByPage(@RequestBody LoginLogQueryCondParam param);
+
+	@PostMapping("/userAccount/findAccountChangeLogByPage")
+	Result findAccountChangeLogByPage(@RequestBody AccountChangeLogQueryCondParam param);
+
+	@GetMapping("/userAccount/findUserAccountDetailsInfoById")
+	Result findUserAccountDetailsInfoById(@RequestParam(value = "userAccountId") String userAccountId);
+
+	@PostMapping("/userAccount/findUserAccountDetailsInfoByPage")
+	Result findUserAccountDetailsInfoByPage(@RequestBody UserAccountQueryCondParam param);
+
+	@GetMapping("/userAccount/modifyLoginPwd")
+	Result modifyLoginPwd(@RequestParam(value = "userAccountId") String userAccountId,
+			@RequestParam(value = "newLoginPwd") String newLoginPwd);
+
+	@GetMapping("/userAccount/modifyMoneyPwd")
+	Result modifyMoneyPwd(@RequestParam(value = "userAccountId") String userAccountId,
+			@RequestParam(value = "newMoneyPwd") String newMoneyPwd);
+
+	@PostMapping("/userAccount/updateUserAccount")
+	Result updateUserAccount(@RequestBody UserAccountEditParam param);
+
+	@GetMapping("/userAccount/delUserAccount")
+	Result delUserAccount(@RequestParam(value = "userAccountId") String userAccountId);
+
+	@PostMapping("/userAccount/addUserAccount")
+	Result addUserAccount(@RequestBody AddUserAccountParam param);
+
 	@GetMapping("/userAccount/getLoginAccountInfo")
 	Result getLoginAccountInfo(@RequestParam(value = "userAccountId") String userAccountId);
 

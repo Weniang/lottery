@@ -1,5 +1,7 @@
 package me.zohar.lottery.api;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import me.zohar.lottery.betting.param.BatchCancelOrderParam;
 import me.zohar.lottery.betting.param.BettingOrderQueryCondParam;
+import me.zohar.lottery.betting.param.ChangeOrderParam;
 import me.zohar.lottery.betting.param.LowerLevelBettingOrderQueryCondParam;
 import me.zohar.lottery.betting.param.PlaceOrderParam;
 import me.zohar.lottery.common.vo.Result;
@@ -15,6 +18,15 @@ import me.zohar.lottery.config.FeignConfiguration;
 
 @FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
 public interface BettingApi {
+	
+	@PostMapping("/betting/changeOrder")
+	Result changeOrder(@RequestBody List<ChangeOrderParam> params);
+	
+	@PostMapping("/betting/findBettingOrderInfoByPage")
+	Result findBettingOrderInfoByPage(@RequestBody BettingOrderQueryCondParam param);
+
+	@GetMapping("/betting/findBettingOrderDetails")
+	Result findBettingOrderDetails(@RequestParam(value = "id") String id);
 
 	@GetMapping("/betting/findTop50WinningRank")
 	Result findTop50WinningRank();

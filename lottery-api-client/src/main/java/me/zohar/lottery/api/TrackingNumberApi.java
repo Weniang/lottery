@@ -14,12 +14,17 @@ import me.zohar.lottery.config.FeignConfiguration;
 @FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
 public interface TrackingNumberApi {
 
+	@PostMapping("/trackingNumber/findTrackingNumberSituationByPage")
+	Result findTrackingNumberSituationByPage(@RequestBody TrackingNumberSituationQueryCondParam param);
+
+	@GetMapping("/trackingNumber/findTrackingNumberOrderDetails")
+	Result findTrackingNumberOrderDetails(@RequestParam(value = "id") String id);
+
 	@PostMapping("/trackingNumber/startTrackingNumber")
-	Result startTrackingNumber(@RequestBody StartTrackingNumberParam startTrackingNumberParam);
+	Result startTrackingNumber(@RequestBody StartTrackingNumberParam param);
 
 	@PostMapping("/trackingNumber/findMyTrackingNumberSituationByPage")
-	Result findMyTrackingNumberSituationByPage(
-			@RequestBody TrackingNumberSituationQueryCondParam startTrackingNumberParam);
+	Result findMyTrackingNumberSituationByPage(@RequestBody TrackingNumberSituationQueryCondParam param);
 
 	@GetMapping("/trackingNumber/findMyTrackingNumberOrderDetails")
 	Result findMyTrackingNumberOrderDetails(@RequestParam(value = "id") String id,

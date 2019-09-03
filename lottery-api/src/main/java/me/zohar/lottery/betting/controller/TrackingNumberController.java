@@ -20,6 +20,18 @@ public class TrackingNumberController {
 	@Autowired
 	private TrackingNumberService trackingNumberService;
 
+	@PostMapping("/findTrackingNumberSituationByPage")
+	@ResponseBody
+	public Result findTrackingNumberSituationByPage(@RequestBody TrackingNumberSituationQueryCondParam param) {
+		return Result.success().setData(trackingNumberService.findTrackingNumberSituationByPage(param));
+	}
+
+	@GetMapping("/findTrackingNumberOrderDetails")
+	@ResponseBody
+	public Result findTrackingNumberOrderDetails(String id) {
+		return Result.success().setData(trackingNumberService.findTrackingNumberOrderDetails(id));
+	}
+
 	/**
 	 * 发起追号
 	 * 

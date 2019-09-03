@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.BettingApi;
+import me.zohar.lottery.betting.param.BatchCancelOrderParam;
 import me.zohar.lottery.betting.param.BettingOrderQueryCondParam;
 import me.zohar.lottery.betting.param.ChangeOrderParam;
-import me.zohar.lottery.betting.service.BettingService;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.security.UserAccountDetails;
 
@@ -22,7 +23,7 @@ import me.zohar.lottery.config.security.UserAccountDetails;
 public class BettingController {
 
 	@Autowired
-	private BettingService bettingService;
+	private BettingApi bettingApi;
 
 	/**
 	 * 获取投注信息详情
@@ -33,7 +34,7 @@ public class BettingController {
 	@GetMapping("/findBettingOrderDetails")
 	@ResponseBody
 	public Result findBettingOrderDetails(String id) {
-		return Result.success().setData(bettingService.findBettingOrderDetails(id));
+		return bettingApi.findBettingOrderDetails(id);
 	}
 
 	/**
@@ -42,10 +43,10 @@ public class BettingController {
 	 * @param param
 	 * @return
 	 */
-	@GetMapping("/findBettingOrderInfoByPage")
+	@PostMapping("/findBettingOrderInfoByPage")
 	@ResponseBody
-	public Result findBettingOrderInfoByPage(BettingOrderQueryCondParam param) {
-		return Result.success().setData(bettingService.findBettingOrderInfoByPage(param));
+	public Result findBettingOrderInfoByPage(@RequestBody BettingOrderQueryCondParam param) {
+		return bettingApi.findBettingOrderInfoByPage(param);
 	}
 
 	/**
@@ -55,9 +56,8 @@ public class BettingController {
 	 */
 	@PostMapping("/changeOrder")
 	@ResponseBody
-	public Result changeOrder(@RequestBody List<ChangeOrderParam> changeOrderParams) {
-		bettingService.changeOrder(changeOrderParams);
-		return Result.success();
+	public Result changeOrder(@RequestBody List<ChangeOrderParam> params) {
+		return bettingApi.changeOrder(params);
 	}
 
 	@GetMapping("/cancelOrder")
@@ -65,16 +65,16 @@ public class BettingController {
 	public Result cancelOrder(String orderId) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		bettingService.cancelOrder(orderId, user.getUserAccountId());
-		return Result.success();
+		return bettingApi.cancelOrder(orderId, user.getUserAccountId());
 	}
 
 	@PostMapping("/batchCancelOrder")
 	@ResponseBody
-	public Result batchCancelOrder(@RequestBody List<String> orderIds) {
+	public Result batchCancelOrder(@RequestBody BatchCancelOrderParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
-		bettingService.batchCancelOrder(orderIds, user.getUserAccountId());
+		param.setUserAccountId(user.getUserAccountId());
+		bettingApi.batchCancelOrder(param);
 		return Result.success();
 	}
 

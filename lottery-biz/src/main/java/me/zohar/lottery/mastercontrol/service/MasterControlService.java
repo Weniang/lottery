@@ -1,13 +1,13 @@
 package me.zohar.lottery.mastercontrol.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import lombok.extern.slf4j.Slf4j;
+import me.zohar.lottery.common.valid.ParamValid;
 import me.zohar.lottery.mastercontrol.convert.ConvertVoWithMasterControl;
 import me.zohar.lottery.mastercontrol.domain.InviteRegisterSetting;
 import me.zohar.lottery.mastercontrol.domain.RechargeSetting;
 import me.zohar.lottery.mastercontrol.domain.RegisterAmountSetting;
+import me.zohar.lottery.mastercontrol.param.UpdateInviteRegisterSettingParam;
+import me.zohar.lottery.mastercontrol.param.UpdateRechargeSettingParam;
+import me.zohar.lottery.mastercontrol.param.UpdateRegisterAmountSettingParam;
 import me.zohar.lottery.mastercontrol.repo.InviteRegisterSettingRepo;
 import me.zohar.lottery.mastercontrol.repo.RechargeSettingRepo;
 import me.zohar.lottery.mastercontrol.repo.RegisterAmountSettingRepo;
@@ -49,14 +53,15 @@ public class MasterControlService {
 		return ConvertVoWithMasterControl.convertInviteRegisterSetting(setting);
 	}
 
+	@ParamValid
 	@Transactional
-	public void updateInviteRegisterSetting(
-			@NotNull @DecimalMin(value = "0", inclusive = true) Integer effectiveDuration, @NotNull Boolean enabled) {
+	public void updateInviteRegisterSetting(UpdateInviteRegisterSettingParam param) {
 		InviteRegisterSetting setting = inviteRegisterSettingRepo.findTopByOrderByEnabled();
 		if (setting == null) {
 			setting = InviteRegisterSetting.build();
 		}
-		setting.update(effectiveDuration, enabled);
+		BeanUtils.copyProperties(param, setting);
+		setting.setLatelyUpdateTime(new Date());
 		inviteRegisterSettingRepo.save(setting);
 	}
 
@@ -72,14 +77,15 @@ public class MasterControlService {
 	 * @param registerAmount
 	 * @param enabled
 	 */
+	@ParamValid
 	@Transactional
-	public void updateRegisterAmountSetting(@NotNull @DecimalMin(value = "0", inclusive = true) Double registerAmount,
-			@NotNull Boolean enabled) {
+	public void updateRegisterAmountSetting(UpdateRegisterAmountSettingParam param) {
 		RegisterAmountSetting setting = registerAmountSettingRepo.findTopByOrderByEnabled();
 		if (setting == null) {
 			setting = RegisterAmountSetting.build();
 		}
-		setting.update(registerAmount, enabled);
+		BeanUtils.copyProperties(param, setting);
+		setting.setLatelyUpdateTime(new Date());
 		registerAmountSettingRepo.save(setting);
 	}
 
@@ -89,16 +95,15 @@ public class MasterControlService {
 		return ConvertVoWithMasterControl.convertRechargeSetting(setting);
 	}
 
+	@ParamValid
 	@Transactional
-	public void updateRechargeSetting(
-			@NotNull @DecimalMin(value = "0", inclusive = true) Integer orderEffectiveDuration,
-			@NotNull @DecimalMin(value = "0", inclusive = true) Integer returnWaterRate,
-			@NotNull Boolean returnWaterRateEnabled) {
+	public void updateRechargeSetting(UpdateRechargeSettingParam param) {
 		RechargeSetting setting = rechargeSettingRepo.findTopByOrderByLatelyUpdateTime();
 		if (setting == null) {
 			setting = RechargeSetting.build();
 		}
-		setting.update(orderEffectiveDuration, returnWaterRate, returnWaterRateEnabled);
+		BeanUtils.copyProperties(param, setting);
+		setting.setLatelyUpdateTime(new Date());
 		rechargeSettingRepo.save(setting);
 	}
 

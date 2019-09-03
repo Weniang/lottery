@@ -3,12 +3,14 @@ package me.zohar.lottery.rechargewithdraw.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.RechargeApi;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.rechargewithdraw.param.RechargeOrderQueryCondParam;
-import me.zohar.lottery.rechargewithdraw.service.RechargeService;
 
 /**
  * 
@@ -21,26 +23,24 @@ import me.zohar.lottery.rechargewithdraw.service.RechargeService;
 public class RechargeController {
 
 	@Autowired
-	private RechargeService rechargeService;
+	private RechargeApi rechargeApi;
 
-	@GetMapping("/findRechargeOrderByPage")
+	@PostMapping("/findRechargeOrderByPage")
 	@ResponseBody
-	public Result findRechargeOrderByPage(RechargeOrderQueryCondParam param) {
-		return Result.success().setData(rechargeService.findRechargeOrderByPage(param));
+	public Result findRechargeOrderByPage(@RequestBody RechargeOrderQueryCondParam param) {
+		return rechargeApi.findRechargeOrderByPage(param);
 	}
 
 	@GetMapping("/cancelOrder")
 	@ResponseBody
 	public Result cancelOrder(String id) {
-		rechargeService.cancelOrder(id);
-		return Result.success();
+		return rechargeApi.cancelOrder(id);
 	}
-	
+
 	@GetMapping("/manualSettlement")
 	@ResponseBody
 	public Result manualSettlement(String orderNo) {
-		rechargeService.manualSettlement(orderNo);
-		return Result.success();
+		return rechargeApi.manualSettlement(orderNo);
 	}
 
 }

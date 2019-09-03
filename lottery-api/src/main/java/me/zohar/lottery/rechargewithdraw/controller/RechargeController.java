@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.rechargewithdraw.param.LowerLevelRechargeOrderQueryCondParam;
 import me.zohar.lottery.rechargewithdraw.param.MuspayCallbackParam;
 import me.zohar.lottery.rechargewithdraw.param.RechargeOrderParam;
+import me.zohar.lottery.rechargewithdraw.param.RechargeOrderQueryCondParam;
 import me.zohar.lottery.rechargewithdraw.service.RechargeService;
 
 /**
@@ -27,6 +29,26 @@ public class RechargeController {
 
 	@Autowired
 	private RechargeService rechargeService;
+
+	@PostMapping("/findRechargeOrderByPage")
+	@ResponseBody
+	public Result findRechargeOrderByPage(@RequestBody RechargeOrderQueryCondParam param) {
+		return Result.success().setData(rechargeService.findRechargeOrderByPage(param));
+	}
+
+	@GetMapping("/cancelOrder")
+	@ResponseBody
+	public Result cancelOrder(String id) {
+		rechargeService.cancelOrder(id);
+		return Result.success();
+	}
+
+	@GetMapping("/manualSettlement")
+	@ResponseBody
+	public Result manualSettlement(String orderNo) {
+		rechargeService.manualSettlement(orderNo);
+		return Result.success();
+	}
 
 	@RequestMapping("/muspayCallback")
 	@ResponseBody

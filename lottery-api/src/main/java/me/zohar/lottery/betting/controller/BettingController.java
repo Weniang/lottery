@@ -1,5 +1,7 @@
 package me.zohar.lottery.betting.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.zohar.lottery.betting.param.BatchCancelOrderParam;
 import me.zohar.lottery.betting.param.BettingOrderQueryCondParam;
+import me.zohar.lottery.betting.param.ChangeOrderParam;
 import me.zohar.lottery.betting.param.LowerLevelBettingOrderQueryCondParam;
 import me.zohar.lottery.betting.param.PlaceOrderParam;
 import me.zohar.lottery.betting.service.BettingService;
@@ -21,6 +24,25 @@ public class BettingController {
 
 	@Autowired
 	private BettingService bettingService;
+
+	@PostMapping("/changeOrder")
+	@ResponseBody
+	public Result changeOrder(@RequestBody List<ChangeOrderParam> params) {
+		bettingService.changeOrder(params);
+		return Result.success();
+	}
+
+	@PostMapping("/findBettingOrderInfoByPage")
+	@ResponseBody
+	public Result findBettingOrderInfoByPage(@RequestBody BettingOrderQueryCondParam param) {
+		return Result.success().setData(bettingService.findBettingOrderInfoByPage(param));
+	}
+
+	@GetMapping("/findBettingOrderDetails")
+	@ResponseBody
+	public Result findBettingOrderDetails(String id) {
+		return Result.success().setData(bettingService.findBettingOrderDetails(id));
+	}
 
 	@GetMapping("/findTop50WinningRank")
 	@ResponseBody
