@@ -20,7 +20,6 @@
 		<relativePath />
 	</parent>
 
-	<!-- 引入spring cloud的依赖，不能少，主要用来管理Spring Cloud生态各组件的版本 -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

@@ -10,6 +10,7 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 zuul:
+  sensitive-headers: null
   routes:
     c1front:
       url: http://localhost:9001/
@@ -17,4 +18,3 @@ zuul:
     c2front:
       url: http://localhost:8081/
       path: /c2/front/**
-    sensitive-headers: Authorization
