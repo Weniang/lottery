@@ -50,15 +50,15 @@ public class IssueController {
 		return Result.success().setData(lotterySituationService.findLotterySituationById(id));
 	}
 
-	@GetMapping("/findLotterySituationByPage")
+	@PostMapping("/findLotterySituationByPage")
 	@ResponseBody
-	public Result findLotterySituationByPage(LotterySituationQueryCondParam param) {
+	public Result findLotterySituationByPage(@RequestBody LotterySituationQueryCondParam param) {
 		return Result.success().setData(lotterySituationService.findLotterySituationByPage(param));
 	}
 
 	@PostMapping("/manualLottery")
 	@ResponseBody
-	public Result manualLottery(ManualLotteryParam param) {
+	public Result manualLottery(@RequestBody ManualLotteryParam param) {
 		issueService.manualLottery(param);
 		return Result.success();
 	}
@@ -72,7 +72,7 @@ public class IssueController {
 
 	@PostMapping("/updateIssue")
 	@ResponseBody
-	public Result updateIssue(IssueEditParam param) {
+	public Result updateIssue(@RequestBody IssueEditParam param) {
 		issueService.updateIssue(param);
 		return Result.success();
 	}

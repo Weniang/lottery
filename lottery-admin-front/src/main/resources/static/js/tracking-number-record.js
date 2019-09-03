@@ -46,13 +46,19 @@ var trackingNumberRecordVM = new Vue({
 			$('.tracking-number-record-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 490,
-				url : '/trackingNumber/findTrackingNumberSituationByPage',
+				method : 'post',
+				url : globalPrefix + '/trackingNumber/findTrackingNumberSituationByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,

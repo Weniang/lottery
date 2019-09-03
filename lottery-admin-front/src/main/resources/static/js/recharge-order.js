@@ -51,13 +51,19 @@ var rechargeOrderVM = new Vue({
 			$('.recharge-order-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 490,
-				url : '/recharge/findRechargeOrderByPage',
+				method : 'post',
+				url : globalPrefix + '/recharge/findRechargeOrderByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -159,7 +165,7 @@ var rechargeOrderVM = new Vue({
 				});
 			});
 		},
-		
+
 		manualSettlement : function(orderNo) {
 			var that = this;
 			layer.confirm('确定要结算吗?', {

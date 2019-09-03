@@ -47,13 +47,19 @@ var accountChangeLogVM = new Vue({
 			$('.account-change-log-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 490,
-				url : '/userAccount/findAccountChangeLogByPage',
+				method : 'post',
+				url : globalPrefix + '/userAccount/findAccountChangeLogByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,

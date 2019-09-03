@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+<script src="https://libs.cdnjs.net/layer/2.3/layer.js"></script>
 <style>
 @charset "UTF-8";
 
@@ -14,26 +14,37 @@
 </style>
 </head>
 <body>
-	<div id="header" v-cloak>
-		<nav class="navbar navbar-expand-sm bg-info navbar-dark" style="justify-content: space-between;">
+	<div id="header" v-show="showHeaderFlag" v-cloak>
+		<nav class="navbar navbar-expand-sm bg-info navbar-dark"
+			style="justify-content: space-between;">
 			<ul class="navbar-nav">
 				<template v-for="(menu, index) in menus">
-				<li class="nav-item" v-if="menu.subMenus.length == 0" v-bind:class="{'active': currentPathName == menu.url}" v-on:click="navTo(menu.url)"><a class="nav-link">{{menu.name}}</a></li>
-				<li class="nav-item dropdown" v-if="menu.subMenus.length > 0" v-bind:class="{'active': parentMenuActive(menu.subMenus)}"><a class="nav-link dropdown-toggle" data-toggle="dropdown">{{menu.name}}</a>
+				<li class="nav-item" v-if="menu.subMenus.length == 0"
+					v-bind:class="{'active': currentPathName == menu.url}"
+					v-on:click="navTo(menu.url)"><a class="nav-link">{{menu.name}}</a></li>
+				<li class="nav-item dropdown" v-if="menu.subMenus.length > 0"
+					v-bind:class="{'active': parentMenuActive(menu.subMenus)}"><a
+					class="nav-link dropdown-toggle" data-toggle="dropdown">{{menu.name}}</a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" v-for="subMenu in menu.subMenus" v-bind:class="{'active': currentPathName == subMenu.url}" v-on:click="navTo(subMenu.url)">{{subMenu.name}}</a>
+						<a class="dropdown-item" v-for="subMenu in menu.subMenus"
+							v-bind:class="{'active': currentPathName == subMenu.url}"
+							v-on:click="navTo(subMenu.url)">{{subMenu.name}}</a>
 					</div></li>
 				</template>
 			</ul>
 			<form class="form-inline" style="float: right;">
 				<span style="padding-right: 20px;">欢迎你:{{userName}}</span>
-				<button type="button" class="btn btn-light btn-sm" v-on:click="logout">退出登录</button>
+				<button type="button" class="btn btn-light btn-sm"
+					v-on:click="logout">退出登录</button>
 			</form>
 		</nav>
 
 	</div>
 	<script type="text/javascript">
+		var globalPrefix = 'http://localhost:8081';
+		Vue.http.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 		Vue.http.interceptors.push(function(request) {
+			request.url = globalPrefix + request.url;
 			return function(response) {
 				if (response.body.code != 200) {
 					response.ok = false;
@@ -48,6 +59,7 @@
 		var header = new Vue({
 			el : '#header',
 			data : {
+				showHeaderFlag : true,
 				userName : '',
 				currentPathName : '',
 				menus : [ {

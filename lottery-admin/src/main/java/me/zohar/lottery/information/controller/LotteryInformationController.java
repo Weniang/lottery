@@ -33,60 +33,55 @@ public class LotteryInformationController {
 	@GetMapping("/delInformationById")
 	@ResponseBody
 	public Result delInformationById(String id) {
-		lotteryInformationApi.delInformationById(id);
-		return Result.success();
+		return lotteryInformationApi.delInformationById(id);
 	}
 
 	@PostMapping("/addOrUpdateInformation")
 	@ResponseBody
 	public Result addOrUpdateInformation(@RequestBody AddOrUpdateInformationParam param) {
-		lotteryInformationApi.addOrUpdateInformation(param);
-		return Result.success();
+		return lotteryInformationApi.addOrUpdateInformation(param);
 	}
 
 	@PostMapping("/syncInformation")
 	@ResponseBody
 	public Result syncInformation(@RequestBody List<SyncInformationParam> params) {
-		lotteryInformationApi.syncInformation(params);
-		return Result.success();
+		return lotteryInformationApi.syncInformation(params);
 	}
 
 	@GetMapping("/collectionInformation")
 	@ResponseBody
 	public Result collectionInformation(String id) {
-		return Result.success().setData(lotteryInformationApi.collectionInformation(id));
+		return lotteryInformationApi.collectionInformation(id);
 	}
 
 	@PostMapping("/addOrUpdateInformationCrawler")
 	@ResponseBody
 	public Result addOrUpdateInformationCrawler(@RequestBody AddOrUpdateInformationCrawlerParam param) {
-		lotteryInformationApi.addOrUpdateInformationCrawler(param);
-		return Result.success();
+		return lotteryInformationApi.addOrUpdateInformationCrawler(param);
 	}
 
 	@GetMapping("/delInformationCrawlerById")
 	@ResponseBody
 	public Result delInformationCrawlerById(String id) {
-		lotteryInformationApi.delInformationCrawlerById(id);
-		return Result.success();
+		return lotteryInformationApi.delInformationCrawlerById(id);
 	}
 
 	@GetMapping("/findInformationCrawlerById")
 	@ResponseBody
 	public Result findInformationCrawlerById(String id) {
-		return Result.success().setData(lotteryInformationApi.findInformationCrawlerById(id));
+		return lotteryInformationApi.findInformationCrawlerById(id);
 	}
 
 	@GetMapping("/findAllInformationCrawler")
 	@ResponseBody
 	public Result findAllInformationCrawler() {
-		return Result.success().setData(lotteryInformationApi.findAllInformationCrawler());
+		return lotteryInformationApi.findAllInformationCrawler();
 	}
 
 	@PostMapping("/findLotteryInformationByPage")
 	@ResponseBody
 	public Result findLotteryInformationByPage(@RequestBody LotteryInformationQueryCondParam param) {
-		return Result.success().setData(lotteryInformationApi.findLotteryInformationByPage(param));
+		return lotteryInformationApi.findLotteryInformationByPage(param);
 	}
 
 }

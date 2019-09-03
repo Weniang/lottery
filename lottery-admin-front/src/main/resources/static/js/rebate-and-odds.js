@@ -45,13 +45,19 @@ var rebateAndOddsVM = new Vue({
 			$('.rebate-and-odds-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 490,
-				url : '/agent/findRebateAndOddsSituationByPage',
+				method : 'post',
+				url : globalPrefix + '/agent/findRebateAndOddsSituationByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 50,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,

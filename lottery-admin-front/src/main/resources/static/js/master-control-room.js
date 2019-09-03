@@ -66,8 +66,6 @@ var masterControlRoomVM = new Vue({
 			that.$http.post('/masterControl/updateInviteRegisterSetting', {
 				effectiveDuration : inviteCodeEffectiveDuration,
 				enabled : inviteRegisterEnabled,
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,
@@ -111,8 +109,6 @@ var masterControlRoomVM = new Vue({
 			that.$http.post('/masterControl/updateRegisterAmountSetting', {
 				registerAmount : registerAmount,
 				enabled : registerAmountEnabled,
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,
@@ -168,8 +164,6 @@ var masterControlRoomVM = new Vue({
 				orderEffectiveDuration : rechargeOrderEffectiveDuration,
 				returnWaterRate : rechargeReturnWaterRate,
 				returnWaterRateEnabled : rechargeReturnWaterRateEnabled,
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,

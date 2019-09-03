@@ -54,13 +54,19 @@ var issueManage = new Vue({
 			$('.lottery-situation-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 490,
-				url : '/issue/findLotterySituationByPage',
+				method : 'post',
+				url : globalPrefix + '/issue/findLotterySituationByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -166,8 +172,6 @@ var issueManage = new Vue({
 				automaticLottery : that.selectedIssue.automaticLottery,
 				automaticSettlement : that.selectedIssue.automaticSettlement,
 				issueInvalid : that.issueInvalid
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,
@@ -208,8 +212,6 @@ var issueManage = new Vue({
 				id : selectedIssue.id,
 				lotteryNum : selectedIssue.lotteryNum,
 				autoSettlementFlag : that.autoSettlementFlag
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				var msg = null;
 				if (!that.autoSettlementFlag) {

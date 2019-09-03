@@ -215,19 +215,6 @@
 				logout : function() {
 					localStorage.removeItem('jwtToken');
 					window.location.href = '/';
-					/* this.$http.post('/logout').then(function(res) {
-						layer.open({
-							title : '提示',
-							icon : '1',
-							closeBtn : 0,
-							btn : [],
-							content : '退出成功!',
-							time : 2000,
-							end : function() {
-								window.location.href = '/';
-							}
-						});
-					}); */
 				},
 				login : function() {
 					var that = this;

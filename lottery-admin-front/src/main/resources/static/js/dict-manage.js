@@ -25,13 +25,19 @@ var dictManageVM = new Vue({
 			$('.dict-manage-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 490,
-				url : '/dictconfig/findDictTypeByPage',
+				method : 'post',
+				url : globalPrefix + '/dictconfig/findDictTypeByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,

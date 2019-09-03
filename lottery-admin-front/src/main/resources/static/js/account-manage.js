@@ -63,13 +63,19 @@ var accountManageVM = new Vue({
 			$('.account-manage-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 490,
-				url : '/userAccount/findUserAccountDetailsInfoByPage',
+				method : 'post',
+				url : globalPrefix + '/userAccount/findUserAccountDetailsInfoByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -225,9 +231,7 @@ var accountManageVM = new Vue({
 				});
 				return;
 			}
-			that.$http.post('/userAccount/addUserAccount', selectedAccount, {
-				emulateJSON : true
-			}).then(function(res) {
+			that.$http.post('/userAccount/addUserAccount', selectedAccount).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,
 					time : 3000,
@@ -329,8 +333,6 @@ var accountManageVM = new Vue({
 				rebate : selectedAccount.rebate,
 				odds : selectedAccount.odds,
 				state : selectedAccount.state
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,
@@ -358,11 +360,11 @@ var accountManageVM = new Vue({
 				});
 				return;
 			}
-			that.$http.post('/userAccount/modifyLoginPwd', {
-				userAccountId : that.selectedAccount.id,
-				newLoginPwd : that.newLoginPwd
-			}, {
-				emulateJSON : true
+			that.$http.get('/userAccount/modifyLoginPwd', {
+				params : {
+					userAccountId : that.selectedAccount.id,
+					newLoginPwd : that.newLoginPwd
+				}
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,
@@ -390,11 +392,11 @@ var accountManageVM = new Vue({
 				});
 				return;
 			}
-			that.$http.post('/userAccount/modifyMoneyPwd', {
-				userAccountId : that.selectedAccount.id,
-				newMoneyPwd : that.newMoneyPwd
-			}, {
-				emulateJSON : true
+			that.$http.get('/userAccount/modifyMoneyPwd', {
+				params : {
+					userAccountId : that.selectedAccount.id,
+					newMoneyPwd : that.newMoneyPwd
+				}
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,
@@ -451,8 +453,6 @@ var accountManageVM = new Vue({
 				openAccountBank : bankInfo.openAccountBank,
 				accountHolder : bankInfo.accountHolder,
 				bankCardAccount : bankInfo.bankCardAccount
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.alert('操作成功!', {
 					icon : 1,

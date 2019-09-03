@@ -25,47 +25,43 @@ public class IssueController {
 	@GetMapping("/getIssueSettingDetailsByGameId")
 	@ResponseBody
 	public Result getIssueSettingDetailsByGameId(String gameId) {
-		return Result.success().setData(issueApi.getIssueSettingDetailsByGameId(gameId));
+		return issueApi.getIssueSettingDetailsByGameId(gameId);
 	}
 
 	@PostMapping("/addOrUpdateIssueSetting")
 	@ResponseBody
 	public Result addOrUpdateIssueSetting(@RequestBody IssueSettingParam param) {
-		issueApi.addOrUpdateIssueSetting(param);
-		return Result.success();
+		return issueApi.addOrUpdateIssueSetting(param);
 	}
 
 	@GetMapping("/findLotterySituationById")
 	@ResponseBody
 	public Result findLotterySituationById(String id) {
-		return Result.success().setData(issueApi.findLotterySituationById(id));
+		return issueApi.findLotterySituationById(id);
 	}
 
 	@PostMapping("/findLotterySituationByPage")
 	@ResponseBody
 	public Result findLotterySituationByPage(@RequestBody LotterySituationQueryCondParam param) {
-		return Result.success().setData(issueApi.findLotterySituationByPage(param));
+		return issueApi.findLotterySituationByPage(param);
 	}
 
 	@PostMapping("/manualLottery")
 	@ResponseBody
 	public Result manualLottery(@RequestBody ManualLotteryParam param) {
-		issueApi.manualLottery(param);
-		return Result.success();
+		return issueApi.manualLottery(param);
 	}
 
 	@GetMapping("/manualSettlement")
 	@ResponseBody
 	public Result manualSettlement(String id) {
-		issueApi.manualSettlement(id);
-		return Result.success();
+		return issueApi.manualSettlement(id);
 	}
 
 	@PostMapping("/updateIssue")
 	@ResponseBody
 	public Result updateIssue(@RequestBody IssueEditParam param) {
-		issueApi.updateIssue(param);
-		return Result.success();
+		return issueApi.updateIssue(param);
 	}
 
 }

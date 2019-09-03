@@ -3,12 +3,16 @@
 <head>
 <meta charset="utf-8">
 <title>管理员登录</title>
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
 <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
-<script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
 <style type="text/css">
 @charset "UTF-8";
@@ -77,6 +81,7 @@ body.my-login-page {
 </head>
 
 <body class="my-login-page">
+	<div th:replace="common/header::html"></div>
 	<div class="container h-100" id="login" v-cloak>
 		<div class="row justify-content-md-center h-100">
 			<div class="card-wrapper">
@@ -85,14 +90,18 @@ body.my-login-page {
 						<h4 class="card-title">管理员登录</h4>
 						<form>
 							<div class="form-group">
-								<label for="email">用户名</label> <input type="text" class="form-control" v-model="userName">
+								<label for="email">用户名</label> <input type="text"
+									class="form-control" v-model="userName">
 							</div>
 
 							<div class="form-group">
-								<label for="password">密码 </label> <input type="password" class="form-control" v-model="password" v-on:keyup.enter="login">
+								<label for="password">密码 </label> <input type="password"
+									class="form-control" v-model="password"
+									v-on:keyup.enter="login">
 							</div>
 							<div class="form-group m-0">
-								<button type="button" class="btn btn-primary btn-block" v-on:click="login">登录</button>
+								<button type="button" class="btn btn-primary btn-block"
+									v-on:click="login">登录</button>
 							</div>
 						</form>
 					</div>
@@ -122,6 +131,7 @@ body.my-login-page {
 			},
 			computed : {},
 			created : function() {
+				header.showHeaderFlag = false;
 			},
 			methods : {
 				login : function() {
@@ -135,11 +145,12 @@ body.my-login-page {
 						return;
 					}
 					that.$http.post('/login', {
-						username : that.userName,
+						userName : that.userName,
 						password : that.password
 					}, {
 						emulateJSON : true
 					}).then(function(res) {
+						localStorage.setItem('jwtToken', res.body.data);
 						window.location.href = '/account-manage';
 					});
 				}

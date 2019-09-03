@@ -51,20 +51,20 @@ public class UserAccountController {
 		return Result.success().setData(userAccountService.findUserAccountDetailsInfoById(userAccountId));
 	}
 
-	@GetMapping("/findUserAccountDetailsInfoByPage")
+	@PostMapping("/findUserAccountDetailsInfoByPage")
 	@ResponseBody
-	public Result findUserAccountDetailsInfoByPage(UserAccountQueryCondParam param) {
+	public Result findUserAccountDetailsInfoByPage(@RequestBody UserAccountQueryCondParam param) {
 		return Result.success().setData(userAccountService.findUserAccountDetailsInfoByPage(param));
 	}
 
-	@PostMapping("/modifyLoginPwd")
+	@GetMapping("/modifyLoginPwd")
 	@ResponseBody
 	public Result modifyLoginPwd(String userAccountId, String newLoginPwd) {
 		userAccountService.modifyLoginPwd(userAccountId, newLoginPwd);
 		return Result.success();
 	}
 
-	@PostMapping("/modifyMoneyPwd")
+	@GetMapping("/modifyMoneyPwd")
 	@ResponseBody
 	public Result modifyMoneyPwd(String userAccountId, String newMoneyPwd) {
 		userAccountService.modifyMoneyPwd(userAccountId, newMoneyPwd);
@@ -73,7 +73,7 @@ public class UserAccountController {
 
 	@PostMapping("/updateUserAccount")
 	@ResponseBody
-	public Result updateUserAccount(UserAccountEditParam param) {
+	public Result updateUserAccount(@RequestBody UserAccountEditParam param) {
 		userAccountService.updateUserAccount(param);
 		return Result.success();
 	}

@@ -32,7 +32,7 @@ public class DictConfigController {
 	@GetMapping("/findDictItemByDictTypeId")
 	@ResponseBody
 	public Result findDictItemByDictTypeId(String dictTypeId) {
-		return Result.success().setData(dictConfigApi.findDictItemByDictTypeId(dictTypeId));
+		return dictConfigApi.findDictItemByDictTypeId(dictTypeId);
 	}
 
 	@GetMapping("/delDictTypeById")
