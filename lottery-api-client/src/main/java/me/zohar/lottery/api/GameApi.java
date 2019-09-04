@@ -12,7 +12,7 @@ import me.zohar.lottery.game.param.GameCategoryParam;
 import me.zohar.lottery.game.param.GameParam;
 import me.zohar.lottery.game.param.GamePlayParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface GameApi {
 
 	@GetMapping("/game/dictSync")

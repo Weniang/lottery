@@ -13,7 +13,7 @@ import me.zohar.lottery.mastercontrol.param.UpdateInviteRegisterSettingParam;
 import me.zohar.lottery.mastercontrol.param.UpdateRechargeSettingParam;
 import me.zohar.lottery.mastercontrol.param.UpdateRegisterAmountSettingParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface MasterControlApi {
 
 	@GetMapping("/masterControl/getInviteRegisterSetting")

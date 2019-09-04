@@ -12,7 +12,7 @@ import me.zohar.lottery.rechargewithdraw.param.LowerLevelWithdrawRecordQueryCond
 import me.zohar.lottery.rechargewithdraw.param.StartWithdrawParam;
 import me.zohar.lottery.rechargewithdraw.param.WithdrawRecordQueryCondParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface WithdrawApi {
 
 	@GetMapping("/withdraw/approved")

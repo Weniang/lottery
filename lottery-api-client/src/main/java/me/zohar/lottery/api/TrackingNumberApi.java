@@ -11,7 +11,7 @@ import me.zohar.lottery.betting.param.TrackingNumberSituationQueryCondParam;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.FeignConfiguration;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface TrackingNumberApi {
 
 	@PostMapping("/trackingNumber/findTrackingNumberSituationByPage")

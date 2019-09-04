@@ -8,7 +8,7 @@ import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.FeignConfiguration;
 import me.zohar.lottery.rechargewithdraw.param.RechargeWithdrawLogQueryCondParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface RechargeWithdrawLogApi {
 
 	@PostMapping("/rechargeWithdrawLog/findMyRechargeWithdrawLogByPage")

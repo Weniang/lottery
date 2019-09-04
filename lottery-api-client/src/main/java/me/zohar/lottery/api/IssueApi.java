@@ -14,7 +14,7 @@ import me.zohar.lottery.issue.param.LotteryHistoryParam;
 import me.zohar.lottery.issue.param.LotterySituationQueryCondParam;
 import me.zohar.lottery.issue.param.ManualLotteryParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface IssueApi {
 
 	@GetMapping("/issue/getIssueSettingDetailsByGameId")

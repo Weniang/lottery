@@ -17,7 +17,7 @@ import me.zohar.lottery.config.FeignConfiguration;
 import me.zohar.lottery.statisticalanalysis.param.AccountProfitAndLossQueryCondParam;
 import me.zohar.lottery.useraccount.param.LowerLevelAccountQueryCondParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface AgentApi {
 
 	@GetMapping("/agent/findAllRebateAndOdds")
@@ -43,10 +43,10 @@ public interface AgentApi {
 
 	@GetMapping("/agent/findRebateAndOdds")
 	Result findRebateAndOdds(@RequestParam(value = "rebate") Double rebate, @RequestParam(value = "odds") Double odds);
-	
+
 	@PostMapping("/agent/addOrUpdateRebateAndOdds")
 	Result addOrUpdateRebateAndOdds(@RequestBody AddOrUpdateRebateAndOddsParam params);
-	
+
 	@GetMapping("/agent/delRebateAndOdds")
 	Result delRebateAndOdds(@RequestParam(value = "rebate") Double rebate, @RequestParam(value = "odds") Double odds);
 

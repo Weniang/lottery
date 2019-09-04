@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.FeignConfiguration;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface LoginApi {
 
 	@PostMapping("/login")

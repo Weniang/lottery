@@ -12,7 +12,7 @@ import me.zohar.lottery.rechargewithdraw.param.LowerLevelRechargeOrderQueryCondP
 import me.zohar.lottery.rechargewithdraw.param.RechargeOrderParam;
 import me.zohar.lottery.rechargewithdraw.param.RechargeOrderQueryCondParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface RechargeApi {
 
 	@PostMapping("/recharge/findRechargeOrderByPage")

@@ -1,8 +1,8 @@
 server:
-  port: 8088
+  port: 8089
 spring:
   application:
-    name: lottery-api
+    name: lottery-api-c1
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/lottery?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root

@@ -14,7 +14,7 @@ import me.zohar.lottery.dictconfig.param.ConfigParam;
 import me.zohar.lottery.dictconfig.param.DictTypeQueryCondParam;
 import me.zohar.lottery.dictconfig.param.UpdateDictDataParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface DictConfigApi {
 
 	@GetMapping("/dictconfig/findDictItemInCache")

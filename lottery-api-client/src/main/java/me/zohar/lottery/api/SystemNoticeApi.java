@@ -11,7 +11,7 @@ import me.zohar.lottery.config.FeignConfiguration;
 import me.zohar.lottery.systemnotice.param.AddOrUpdateSystemNoticeParam;
 import me.zohar.lottery.systemnotice.param.SystemNoticeQueryCondParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface SystemNoticeApi {
 
 	@PostMapping("/systemNotice/findSystemNoticeByPage")

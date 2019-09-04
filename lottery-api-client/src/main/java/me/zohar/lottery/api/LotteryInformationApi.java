@@ -15,7 +15,7 @@ import me.zohar.lottery.information.param.AddOrUpdateInformationParam;
 import me.zohar.lottery.information.param.LotteryInformationQueryCondParam;
 import me.zohar.lottery.information.param.SyncInformationParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface LotteryInformationApi {
 
 	@GetMapping("/lotteryInformation/findAllInformationCrawler")

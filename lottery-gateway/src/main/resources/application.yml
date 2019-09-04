@@ -12,9 +12,9 @@ eureka:
 zuul:
   sensitive-headers: null
   routes:
-    c1front:
+    c1:
       url: http://localhost:9001/
       path: /c1/front/**
-    c2front:
+    c2:
       url: http://localhost:8081/
       path: /c2/front/**

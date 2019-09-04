@@ -19,7 +19,7 @@ import me.zohar.lottery.useraccount.param.UserAccountEditParam;
 import me.zohar.lottery.useraccount.param.UserAccountQueryCondParam;
 import me.zohar.lottery.useraccount.param.UserAccountRegisterParam;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface UserAccountApi {
 
 	@PostMapping("/userAccount/findLoginLogByPage")

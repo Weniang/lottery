@@ -16,7 +16,7 @@ import me.zohar.lottery.betting.param.PlaceOrderParam;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.FeignConfiguration;
 
-@FeignClient(name = "lottery-api", configuration = FeignConfiguration.class)
+@FeignClient(value = "${apiName}", configuration = FeignConfiguration.class)
 public interface BettingApi {
 	
 	@PostMapping("/betting/changeOrder")
