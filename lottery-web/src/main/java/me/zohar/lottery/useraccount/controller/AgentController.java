@@ -11,31 +11,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.zohar.lottery.agent.param.AgentOpenAnAccountParam;
 import me.zohar.lottery.agent.param.GenerateInviteCodeParam;
-import me.zohar.lottery.agent.service.AgentService;
+import me.zohar.lottery.api.AgentApi;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.security.UserAccountDetails;
 import me.zohar.lottery.statisticalanalysis.param.AccountProfitAndLossQueryCondParam;
-import me.zohar.lottery.statisticalanalysis.service.StatisticalAnalysisService;
 import me.zohar.lottery.useraccount.param.LowerLevelAccountQueryCondParam;
-import me.zohar.lottery.useraccount.service.UserAccountService;
 
 @Controller
 @RequestMapping("/agent")
 public class AgentController {
 
 	@Autowired
-	private AgentService agentService;
-
-	@Autowired
-	private UserAccountService userAccountService;
-
-	@Autowired
-	private StatisticalAnalysisService statisticalAnalysisService;
+	private AgentApi agentApi;
 
 	@GetMapping("/findAllRebateAndOdds")
 	@ResponseBody
 	public Result findAllRebateAndOdds() {
-		return Result.success().setData(agentService.findAllRebateAndOdds());
+		return agentApi.findAllRebateAndOdds();
 	}
 
 	@PostMapping("/agentOpenAnAccount")
@@ -44,8 +36,7 @@ public class AgentController {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setInviterId(user.getUserAccountId());
-		agentService.agentOpenAnAccount(param);
-		return Result.success();
+		return agentApi.agentOpenAnAccount(param);
 	}
 
 	@PostMapping("/generateInviteCodeAndGetInviteRegisterLink")
@@ -54,26 +45,25 @@ public class AgentController {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setInviterId(user.getUserAccountId());
-		String inviteCodeId = agentService.generateInviteCode(param);
-		return Result.success().setData(agentService.getInviteCodeDetailsInfoById(inviteCodeId));
+		return agentApi.generateInviteCodeAndGetInviteRegisterLink(param);
 	}
 
-	@GetMapping("/findLowerLevelAccountDetailsInfoByPage")
+	@PostMapping("/findLowerLevelAccountDetailsInfoByPage")
 	@ResponseBody
-	public Result findLowerLevelAccountDetailsInfoByPage(LowerLevelAccountQueryCondParam param) {
+	public Result findLowerLevelAccountDetailsInfoByPage(@RequestBody LowerLevelAccountQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());
-		return Result.success().setData(userAccountService.findLowerLevelAccountDetailsInfoByPage(param));
+		return agentApi.findLowerLevelAccountDetailsInfoByPage(param);
 	}
 
-	@GetMapping("/findAccountProfitAndLossByPage")
+	@PostMapping("/findAccountProfitAndLossByPage")
 	@ResponseBody
-	public Result findAccountProfitAndLossByPage(AccountProfitAndLossQueryCondParam param) {
+	public Result findAccountProfitAndLossByPage(@RequestBody AccountProfitAndLossQueryCondParam param) {
 		UserAccountDetails user = (UserAccountDetails) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		param.setCurrentAccountId(user.getUserAccountId());
-		return Result.success().setData(statisticalAnalysisService.findAccountProfitAndLossByPage(param));
+		return agentApi.findAccountProfitAndLossByPage(param);
 	}
 
 }

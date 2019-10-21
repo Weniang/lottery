@@ -6,50 +6,50 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.GameApi;
 import me.zohar.lottery.common.vo.Result;
-import me.zohar.lottery.game.service.GameService;
 
 @Controller
 @RequestMapping("/game")
 public class GameController {
 
 	@Autowired
-	private GameService gameService;
+	private GameApi gameApi;
 
 	@GetMapping("/findAllOpenGame")
 	@ResponseBody
 	public Result findAllOpenGame() {
-		return Result.success().setData(gameService.findAllOpenGame());
+		return gameApi.findAllOpenGame();
 	}
 
 	@GetMapping("/findGamePlayAndNumLocateByGameCode")
 	@ResponseBody
 	public Result findGamePlayAndNumLocateByGameCode(String gameCode) {
-		return Result.success().setData(gameService.findGamePlayDetailsByGameCode(gameCode));
+		return gameApi.findGamePlayAndNumLocateByGameCode(gameCode);
 	}
 
 	@GetMapping("/findAllGameCategory")
 	@ResponseBody
 	public Result findAllGameCategory() {
-		return Result.success().setData(gameService.findAllGameCategory());
+		return gameApi.findAllGameCategory();
 	}
 
 	@GetMapping("/findAllGameSituation")
 	@ResponseBody
 	public Result findAllGameSituation() {
-		return Result.success().setData(gameService.findAllGameSituation());
+		return gameApi.findAllGameSituation();
 	}
 
 	@GetMapping("/findGameSituationByGameCategoryId")
 	@ResponseBody
 	public Result findGameSituationByGameCategoryId(String gameCategoryId) {
-		return Result.success().setData(gameService.findGameSituationByGameCategoryId(gameCategoryId));
+		return gameApi.findGameSituationByGameCategoryId(gameCategoryId);
 	}
 
 	@GetMapping("/findGameByGameCode")
 	@ResponseBody
 	public Result findGameByGameCode(String gameCode) {
-		return Result.success().setData(gameService.findGameByGameCode(gameCode));
+		return gameApi.findGameByGameCode(gameCode);
 	}
 
 }

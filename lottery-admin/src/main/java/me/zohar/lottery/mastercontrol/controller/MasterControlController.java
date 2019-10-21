@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.MasterControlApi;
 import me.zohar.lottery.common.vo.Result;
-import me.zohar.lottery.mastercontrol.service.MasterControlService;
+import me.zohar.lottery.mastercontrol.param.UpdateInviteRegisterSettingParam;
+import me.zohar.lottery.mastercontrol.param.UpdateRechargeSettingParam;
+import me.zohar.lottery.mastercontrol.param.UpdateRegisterAmountSettingParam;
 
 /**
  * 总控
@@ -25,53 +28,48 @@ import me.zohar.lottery.mastercontrol.service.MasterControlService;
 public class MasterControlController {
 
 	@Autowired
-	private MasterControlService service;
+	private MasterControlApi masterControlApi;
 
 	@GetMapping("/getInviteRegisterSetting")
 	@ResponseBody
 	public Result getInviteRegisterSetting() {
-		return Result.success().setData(service.getInviteRegisterSetting());
+		return masterControlApi.getInviteRegisterSetting();
 	}
 
 	@PostMapping("/updateInviteRegisterSetting")
 	@ResponseBody
-	public Result updateInviteRegisterSetting(Integer effectiveDuration, Boolean enabled) {
-		service.updateInviteRegisterSetting(effectiveDuration, enabled);
-		return Result.success();
+	public Result updateInviteRegisterSetting(@RequestBody UpdateInviteRegisterSettingParam param) {
+		return masterControlApi.updateInviteRegisterSetting(param);
 	}
 
 	@GetMapping("/getRegisterAmountSetting")
 	@ResponseBody
 	public Result getRegisterAmountSetting() {
-		return Result.success().setData(service.getRegisterAmountSetting());
+		return masterControlApi.getRegisterAmountSetting();
 	}
 
 	@PostMapping("/updateRegisterAmountSetting")
 	@ResponseBody
-	public Result updateRegisterAmountSetting(Double registerAmount, Boolean enabled) {
-		service.updateRegisterAmountSetting(registerAmount, enabled);
-		return Result.success();
+	public Result updateRegisterAmountSetting(@RequestBody UpdateRegisterAmountSettingParam param) {
+		return masterControlApi.updateRegisterAmountSetting(param);
 	}
 
 	@GetMapping("/getRechargeSetting")
 	@ResponseBody
 	public Result getRechargeSetting() {
-		return Result.success().setData(service.getRechargeSetting());
+		return masterControlApi.getRechargeSetting();
 	}
 
 	@PostMapping("/updateRechargeSetting")
 	@ResponseBody
-	public Result updateRechargeSetting(Integer orderEffectiveDuration, Integer returnWaterRate,
-			Boolean returnWaterRateEnabled) {
-		service.updateRechargeSetting(orderEffectiveDuration, returnWaterRate, returnWaterRateEnabled);
-		return Result.success();
+	public Result updateRechargeSetting(@RequestBody UpdateRechargeSettingParam param) {
+		return masterControlApi.updateRechargeSetting(param);
 	}
 
 	@PostMapping("/refreshCache")
 	@ResponseBody
 	public Result refreshCache(@RequestBody List<String> cacheItems) {
-		service.refreshCache(cacheItems);
-		return Result.success();
+		return masterControlApi.refreshCache(cacheItems);
 	}
 
 }

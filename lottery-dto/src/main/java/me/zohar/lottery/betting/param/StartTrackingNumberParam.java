@@ -20,6 +20,9 @@ import lombok.Data;
 @Data
 public class StartTrackingNumberParam {
 
+	@NotBlank
+	private String userAccountId;
+
 	/**
 	 * 游戏代码
 	 */
@@ -32,14 +35,14 @@ public class StartTrackingNumberParam {
 	@NotNull
 	@DecimalMin(value = "0", inclusive = false)
 	private Double baseAmount;
-	
+
 	/**
 	 * 返点
 	 */
 	@NotNull
 	@DecimalMin(value = "0", inclusive = true)
 	private Double rebate;
-	
+
 	/**
 	 * 中奖即停
 	 */

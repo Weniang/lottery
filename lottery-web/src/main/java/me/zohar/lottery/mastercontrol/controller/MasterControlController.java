@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.zohar.lottery.common.vo.Result;
-import me.zohar.lottery.mastercontrol.service.MasterControlService;
 
 /**
  * 总控
@@ -20,13 +19,13 @@ import me.zohar.lottery.mastercontrol.service.MasterControlService;
 @RequestMapping("/masterControl")
 public class MasterControlController {
 
-	@Autowired
-	private MasterControlService service;
-
-	@GetMapping("/getInviteRegisterSetting")
-	@ResponseBody
-	public Result getInviteRegisterSetting() {
-		return Result.success().setData(service.getInviteRegisterSetting());
-	}
+//	@Autowired
+//	private MasterControlApi service;
+//
+//	@GetMapping("/getInviteRegisterSetting")
+//	@ResponseBody
+//	public Result getInviteRegisterSetting() {
+//		return Result.success().setData(service.getInviteRegisterSetting());
+//	}
 
 }

@@ -183,8 +183,6 @@
 					that.$http.post('/recharge/generateRechargeOrder', {
 						rechargeWayCode : that.selectedRechargeWay.rechargeWayCode,
 						rechargeAmount : that.rechargeAmount
-					}, {
-						emulateJSON : true
 					}).then(function(res) {
 						layer.open({
 							title : '提示',

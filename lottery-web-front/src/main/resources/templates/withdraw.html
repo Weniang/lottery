@@ -121,8 +121,6 @@
 					that.$http.post('/withdraw/startWithdraw', {
 						withdrawAmount : that.withdrawAmount,
 						moneyPwd : that.moneyPwd
-					}, {
-						emulateJSON : true
 					}).then(function(res) {
 						layer.open({
 							title : '提示',

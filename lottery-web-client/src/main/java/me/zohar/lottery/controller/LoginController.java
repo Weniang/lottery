@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import me.zohar.lottery.Result;
+import me.zohar.lottery.FeignConfiguration;
+import me.zohar.lottery.common.vo.Result;
 
 @RestController
-@FeignClient(name = "lottery-web")
+@FeignClient(name = "lottery-web", configuration = FeignConfiguration.class)
 public interface LoginController {
 
 	@PostMapping("/login")

@@ -3,12 +3,16 @@
 <head>
 <meta charset="utf-8">
 <title>盛大彩票</title>
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
-<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.staticfile.org/vue/2.6.1/vue.min.js"></script>
-<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
 <link href="/css/common/common.css" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -55,10 +59,14 @@
 		<div id="lottery-information" v-cloak>
 			<div class="page-title">彩票资讯</div>
 			<ul class="list-group">
-				<li class="list-group-item" v-for="information in informations" v-on:click="toInformationDetalsPage(information.id)">{{information.title}}</li>
+				<li class="list-group-item" v-for="information in informations"
+					v-on:click="toInformationDetalsPage(information.id)">{{information.title}}</li>
 			</ul>
 			<div class="lottery-pagination">
-				<template> <b-pagination v-model="pageNum" :per-page="pageSize" :total-rows="total" align="center" prev-text="上一页" next-text="下一页" v-on:change=loadInformationByPage></b-pagination> </template>
+				<template> <b-pagination v-model="pageNum"
+					:per-page="pageSize" :total-rows="total" align="center"
+					prev-text="上一页" next-text="下一页" v-on:change=loadInformationByPage></b-pagination>
+				</template>
 			</div>
 		</div>
 	</div>
@@ -84,11 +92,9 @@
 				},
 				loadInformationByPage : function(pageNum) {
 					var that = this;
-					that.$http.get('/lotteryInformation/findLotteryInformationByPage', {
-						params : {
-							pageNum : pageNum,
-							pageSize : that.pageSize
-						}
+					that.$http.post('/lotteryInformation/findLotteryInformationByPage', {
+						pageNum : pageNum,
+						pageSize : that.pageSize
 					}).then(function(res) {
 						that.informations = res.body.data.content;
 						that.pageNum = res.body.data.pageNum;

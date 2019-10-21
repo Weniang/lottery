@@ -16,8 +16,10 @@ spring:
   redis:
     port: 6379
     host: localhost
+  main:
+    allow-bean-definition-overriding: true
 xxl:
   mq:
     admin:
-      address: http://localhost:8080/xxl-mq-admin
+      address: http://localhost:9999/xxl-mq-admin
     accessToken: null

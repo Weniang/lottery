@@ -5,9 +5,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.UserAccountApi;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.config.security.UserAccountDetails;
 import me.zohar.lottery.useraccount.param.AccountChangeLogQueryCondParam;
@@ -16,76 +18,66 @@ import me.zohar.lottery.useraccount.param.BindBankInfoParam;
 import me.zohar.lottery.useraccount.param.LoginLogQueryCondParam;
 import me.zohar.lottery.useraccount.param.UserAccountEditParam;
 import me.zohar.lottery.useraccount.param.UserAccountQueryCondParam;
-import me.zohar.lottery.useraccount.service.LoginService;
-import me.zohar.lottery.useraccount.service.UserAccountService;
-import me.zohar.lottery.useraccount.vo.UserAccountInfoVO;
 
 @Controller
 @RequestMapping("/userAccount")
 public class UserAccountController {
 
 	@Autowired
-	private UserAccountService userAccountService;
+	private UserAccountApi userAccountApi;
 
-	@Autowired
-	private LoginService loginLogService;
-
-	@GetMapping("/findLoginLogByPage")
+	@PostMapping("/findLoginLogByPage")
 	@ResponseBody
-	public Result findLoginLogByPage(LoginLogQueryCondParam param) {
-		return Result.success().setData(loginLogService.findLoginLogByPage(param));
+	public Result findLoginLogByPage(@RequestBody LoginLogQueryCondParam param) {
+		return userAccountApi.findLoginLogByPage(param);
 	}
 
-	@GetMapping("/findAccountChangeLogByPage")
+	@PostMapping("/findAccountChangeLogByPage")
 	@ResponseBody
-	public Result findAccountChangeLogByPage(AccountChangeLogQueryCondParam param) {
-		return Result.success().setData(userAccountService.findAccountChangeLogByPage(param));
+	public Result findAccountChangeLogByPage(@RequestBody AccountChangeLogQueryCondParam param) {
+		return userAccountApi.findAccountChangeLogByPage(param);
 	}
 
 	@GetMapping("/findUserAccountDetailsInfoById")
 	@ResponseBody
 	public Result findUserAccountDetailsInfoById(String userAccountId) {
-		return Result.success().setData(userAccountService.findUserAccountDetailsInfoById(userAccountId));
+		return userAccountApi.findUserAccountDetailsInfoById(userAccountId);
 	}
 
-	@GetMapping("/findUserAccountDetailsInfoByPage")
+	@PostMapping("/findUserAccountDetailsInfoByPage")
 	@ResponseBody
-	public Result findUserAccountDetailsInfoByPage(UserAccountQueryCondParam param) {
-		return Result.success().setData(userAccountService.findUserAccountDetailsInfoByPage(param));
+	public Result findUserAccountDetailsInfoByPage(@RequestBody UserAccountQueryCondParam param) {
+		return userAccountApi.findUserAccountDetailsInfoByPage(param);
 	}
 
 	@PostMapping("/bindBankInfo")
 	@ResponseBody
-	public Result bindBankInfo(BindBankInfoParam param) {
-		userAccountService.bindBankInfo(param);
-		return Result.success();
+	public Result bindBankInfo(@RequestBody BindBankInfoParam param) {
+		return userAccountApi.bindBankInfo(param);
 	}
 
 	@GetMapping("/getBankInfo")
 	@ResponseBody
 	public Result getBankInfo(String userAccountId) {
-		return Result.success().setData(userAccountService.getBankInfo(userAccountId));
+		return userAccountApi.getBankInfo(userAccountId);
 	}
 
-	@PostMapping("/modifyLoginPwd")
+	@GetMapping("/modifyLoginPwd")
 	@ResponseBody
 	public Result modifyLoginPwd(String userAccountId, String newLoginPwd) {
-		userAccountService.modifyLoginPwd(userAccountId, newLoginPwd);
-		return Result.success();
+		return userAccountApi.modifyLoginPwd(userAccountId, newLoginPwd);
 	}
 
-	@PostMapping("/modifyMoneyPwd")
+	@GetMapping("/modifyMoneyPwd")
 	@ResponseBody
 	public Result modifyMoneyPwd(String userAccountId, String newMoneyPwd) {
-		userAccountService.modifyMoneyPwd(userAccountId, newMoneyPwd);
-		return Result.success();
+		return userAccountApi.modifyMoneyPwd(userAccountId, newMoneyPwd);
 	}
 
 	@PostMapping("/updateUserAccount")
 	@ResponseBody
-	public Result updateUserAccount(UserAccountEditParam param) {
-		userAccountService.updateUserAccount(param);
-		return Result.success();
+	public Result updateUserAccount(@RequestBody UserAccountEditParam param) {
+		return userAccountApi.updateUserAccount(param);
 	}
 
 	@GetMapping("/getUserAccountInfo")
@@ -96,22 +88,19 @@ public class UserAccountController {
 			return Result.success();
 		}
 		UserAccountDetails user = (UserAccountDetails) principal;
-		UserAccountInfoVO userAccountInfo = userAccountService.getUserAccountInfo(user.getUserAccountId());
-		return Result.success().setData(userAccountInfo);
+		return userAccountApi.getUserAccountInfo(user.getUserAccountId());
 	}
 
 	@GetMapping("/delUserAccount")
 	@ResponseBody
 	public Result delUserAccount(String userAccountId) {
-		userAccountService.delUserAccount(userAccountId);
-		return Result.success();
+		return userAccountApi.delUserAccount(userAccountId);
 	}
 
 	@PostMapping("/addUserAccount")
 	@ResponseBody
-	public Result addUserAccount(AddUserAccountParam param) {
-		userAccountService.addUserAccount(param);
-		return Result.success();
+	public Result addUserAccount(@RequestBody AddUserAccountParam param) {
+		return userAccountApi.addUserAccount(param);
 	}
 
 }

@@ -14,6 +14,11 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>me.zohar</groupId>
+			<artifactId>lottery-dto</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>

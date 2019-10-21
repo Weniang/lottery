@@ -105,8 +105,6 @@ var personalCenter = new Vue({
 				openAccountBank : that.openAccountBank,
 				accountHolder : that.accountHolder,
 				bankCardAccount : that.bankCardAccount
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.confirm('银行卡信息绑定成功!', {
 					icon : 1,
@@ -171,8 +169,6 @@ var personalCenter = new Vue({
 			that.$http.post('/userAccount/modifyLoginPwd', {
 				oldLoginPwd : that.oldLoginPwd,
 				newLoginPwd : that.newLoginPwd
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.confirm('登录密码修改成功!', {
 					icon : 1,
@@ -237,8 +233,6 @@ var personalCenter = new Vue({
 			that.$http.post('/userAccount/modifyMoneyPwd', {
 				oldMoneyPwd : that.oldMoneyPwd,
 				newMoneyPwd : that.newMoneyPwd
-			}, {
-				emulateJSON : true
 			}).then(function(res) {
 				layer.confirm('资金密码修改成功!', {
 					icon : 1,
@@ -294,13 +288,19 @@ var personalCenter = new Vue({
 			$('.account-change-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/userAccount/findMyAccountChangeLogByPage',
+				method : 'post',
+				url : globalPrefix + '/userAccount/findMyAccountChangeLogByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,
@@ -395,13 +395,19 @@ var personalCenter = new Vue({
 			$('.recharge-withdraw-table').bootstrapTable({
 				classes : 'table table-hover',
 				height : 540,
-				url : '/rechargeWithdrawLog/findMyRechargeWithdrawLogByPage',
+				method : 'post',
+				url : globalPrefix + '/rechargeWithdrawLog/findMyRechargeWithdrawLogByPage',
 				pagination : true,
 				sidePagination : 'server',
 				pageNumber : 1,
 				pageSize : 10,
 				pageList : [ 10, 25, 50, 100 ],
 				queryParamsType : '',
+				ajaxOptions : {
+					headers : {
+						'Authorization' : localStorage.getItem('jwtToken')
+					}
+				},
 				queryParams : function(params) {
 					var condParam = {
 						pageSize : params.pageSize,

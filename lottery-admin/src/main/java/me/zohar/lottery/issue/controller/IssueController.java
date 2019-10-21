@@ -8,72 +8,60 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import me.zohar.lottery.api.IssueApi;
 import me.zohar.lottery.common.vo.Result;
 import me.zohar.lottery.issue.param.IssueEditParam;
 import me.zohar.lottery.issue.param.IssueSettingParam;
 import me.zohar.lottery.issue.param.LotterySituationQueryCondParam;
 import me.zohar.lottery.issue.param.ManualLotteryParam;
-import me.zohar.lottery.issue.service.IssueService;
-import me.zohar.lottery.issue.service.IssueSettingService;
-import me.zohar.lottery.issue.service.LotterySituationService;
 
 @Controller
 @RequestMapping("/issue")
 public class IssueController {
 
 	@Autowired
-	private IssueService issueService;
-	
-	@Autowired
-	private IssueSettingService issueSettingService;
-
-	@Autowired
-	private LotterySituationService lotterySituationService;
+	private IssueApi issueApi;
 
 	@GetMapping("/getIssueSettingDetailsByGameId")
 	@ResponseBody
 	public Result getIssueSettingDetailsByGameId(String gameId) {
-		return Result.success().setData(issueSettingService.getIssueSettingDetailsByGameId(gameId));
+		return issueApi.getIssueSettingDetailsByGameId(gameId);
 	}
 
 	@PostMapping("/addOrUpdateIssueSetting")
 	@ResponseBody
-	public Result addOrUpdateIssueSetting(@RequestBody IssueSettingParam issueSettingParam) {
-		issueSettingService.addOrUpdateIssueSetting(issueSettingParam);
-		return Result.success();
+	public Result addOrUpdateIssueSetting(@RequestBody IssueSettingParam param) {
+		return issueApi.addOrUpdateIssueSetting(param);
 	}
 
 	@GetMapping("/findLotterySituationById")
 	@ResponseBody
 	public Result findLotterySituationById(String id) {
-		return Result.success().setData(lotterySituationService.findLotterySituationById(id));
+		return issueApi.findLotterySituationById(id);
 	}
 
-	@GetMapping("/findLotterySituationByPage")
+	@PostMapping("/findLotterySituationByPage")
 	@ResponseBody
-	public Result findLotterySituationByPage(LotterySituationQueryCondParam param) {
-		return Result.success().setData(lotterySituationService.findLotterySituationByPage(param));
+	public Result findLotterySituationByPage(@RequestBody LotterySituationQueryCondParam param) {
+		return issueApi.findLotterySituationByPage(param);
 	}
 
 	@PostMapping("/manualLottery")
 	@ResponseBody
-	public Result manualLottery(ManualLotteryParam param) {
-		issueService.manualLottery(param);
-		return Result.success();
+	public Result manualLottery(@RequestBody ManualLotteryParam param) {
+		return issueApi.manualLottery(param);
 	}
 
 	@GetMapping("/manualSettlement")
 	@ResponseBody
 	public Result manualSettlement(String id) {
-		issueService.manualSettlement(id);
-		return Result.success();
+		return issueApi.manualSettlement(id);
 	}
-	
+
 	@PostMapping("/updateIssue")
 	@ResponseBody
-	public Result updateIssue(IssueEditParam param) {
-		issueService.updateIssue(param);
-		return Result.success();
+	public Result updateIssue(@RequestBody IssueEditParam param) {
+		return issueApi.updateIssue(param);
 	}
 
 }
