@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/lottery.iml" filepath="$PROJECT_DIR$/lottery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-admin/lottery-admin.iml" filepath="$PROJECT_DIR$/lottery-admin/lottery-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-admin-front/lottery-admin-front.iml" filepath="$PROJECT_DIR$/lottery-admin-front/lottery-admin-front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-api/lottery-api.iml" filepath="$PROJECT_DIR$/lottery-api/lottery-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-api-client/lottery-api-client.iml" filepath="$PROJECT_DIR$/lottery-api-client/lottery-api-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-biz/lottery-biz.iml" filepath="$PROJECT_DIR$/lottery-biz/lottery-biz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-dto/lottery-dto.iml" filepath="$PROJECT_DIR$/lottery-dto/lottery-dto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-eureka-server/lottery-eureka-server.iml" filepath="$PROJECT_DIR$/lottery-eureka-server/lottery-eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-gateway/lottery-gateway.iml" filepath="$PROJECT_DIR$/lottery-gateway/lottery-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-task/lottery-task.iml" filepath="$PROJECT_DIR$/lottery-task/lottery-task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-web/lottery-web.iml" filepath="$PROJECT_DIR$/lottery-web/lottery-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-web-client/lottery-web-client.iml" filepath="$PROJECT_DIR$/lottery-web-client/lottery-web-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery-web-front/lottery-web-front.iml" filepath="$PROJECT_DIR$/lottery-web-front/lottery-web-front.iml" />
+    </modules>
+  </component>
+</project>

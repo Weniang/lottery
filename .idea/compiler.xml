@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lottery-api-client" />
+        <module name="lottery-web-client" />
+        <module name="lottery-api" />
+        <module name="lottery-admin" />
+        <module name="lottery-biz" />
+        <module name="lottery-eureka-server" />
+        <module name="lottery-web-front" />
+        <module name="lottery-admin-front" />
+        <module name="lottery-gateway" />
+        <module name="lottery-task" />
+        <module name="lottery-dto" />
+        <module name="lottery-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="lottery" target="1.8" />
+      <module name="lottery-admin" target="1.8" />
+      <module name="lottery-admin-front" target="1.8" />
+      <module name="lottery-api" target="1.8" />
+      <module name="lottery-api-client" target="1.8" />
+      <module name="lottery-biz" target="1.8" />
+      <module name="lottery-dto" target="1.8" />
+      <module name="lottery-eureka-server" target="1.8" />
+      <module name="lottery-gateway" target="1.8" />
+      <module name="lottery-task" target="1.8" />
+      <module name="lottery-web" target="1.8" />
+      <module name="lottery-web-client" target="1.8" />
+      <module name="lottery-web-front" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lottery-admin" options="-parameters" />
+      <module name="lottery-admin-front" options="-parameters" />
+      <module name="lottery-api" options="-parameters" />
+      <module name="lottery-api-client" options="-parameters" />
+      <module name="lottery-biz" options="-parameters" />
+      <module name="lottery-dto" options="-parameters" />
+      <module name="lottery-eureka-server" options="-parameters" />
+      <module name="lottery-gateway" options="-parameters" />
+      <module name="lottery-task" options="-parameters" />
+      <module name="lottery-web" options="-parameters" />
+      <module name="lottery-web-client" options="-parameters" />
+      <module name="lottery-web-front" options="-parameters" />
+    </option>
+  </component>
+</project>
