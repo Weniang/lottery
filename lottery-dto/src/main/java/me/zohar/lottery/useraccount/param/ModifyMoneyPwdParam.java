@@ -16,7 +16,7 @@ public class ModifyMoneyPwdParam {
 	/**
 	 * 旧的资金密码
 	 */
-	@NotBlank(message = "oldMoneyPwd不能为空")
+//	@NotBlank(message = "oldMoneyPwd不能为空")
 	private String oldMoneyPwd;
 
 	/**

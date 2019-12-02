@@ -37,6 +37,7 @@
 		<module>lottery-biz</module>
 		<module>lottery-api</module>
 		<module>lottery-api-client</module>
+		<module>lottery-app-api</module>
 		<module>lottery-task</module>
 		<module>lottery-web</module>
 		<module>lottery-admin</module>

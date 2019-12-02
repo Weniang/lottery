@@ -4,9 +4,9 @@ spring:
   application:
     name: lottery-api-c1
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/lottery?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/lottery2?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: zohar001
+    password: Asd_123asd
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true

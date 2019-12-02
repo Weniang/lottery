@@ -10,6 +10,7 @@
         <module name="lottery-web-client" />
         <module name="lottery-api" />
         <module name="lottery-admin" />
+        <module name="lottery-app-api" />
         <module name="lottery-biz" />
         <module name="lottery-eureka-server" />
         <module name="lottery-web-front" />
@@ -26,6 +27,7 @@
       <module name="lottery-admin-front" target="1.8" />
       <module name="lottery-api" target="1.8" />
       <module name="lottery-api-client" target="1.8" />
+      <module name="lottery-app-api" target="1.8" />
       <module name="lottery-biz" target="1.8" />
       <module name="lottery-dto" target="1.8" />
       <module name="lottery-eureka-server" target="1.8" />
@@ -42,6 +44,7 @@
       <module name="lottery-admin-front" options="-parameters" />
       <module name="lottery-api" options="-parameters" />
       <module name="lottery-api-client" options="-parameters" />
+      <module name="lottery-app-api" options="-parameters" />
       <module name="lottery-biz" options="-parameters" />
       <module name="lottery-dto" options="-parameters" />
       <module name="lottery-eureka-server" options="-parameters" />
